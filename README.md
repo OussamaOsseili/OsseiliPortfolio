@@ -1,16 +1,28 @@
-## Hi there 👋
+<h1 align="center">Oussama Osseili</h1>
+<p align="center">
+Aspiring Football (Soccer) Sports Analyst • MIAGE (EMSI Rabat) — Class of 2026 •
+</p>
 
-<!--
-**OussamaOsseili/OussamaOsseili** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+---
 
-Here are some ideas to get you started:
+### 👋 About
+- Final-year MIAGE engineering student at EMSI Rabat  
+- Building a portfolio in football analytics (xG, xT, player similarity, set-pieces)  
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+### 🛠️ Tech
+`Python` · `pandas` · `numpy` · `scikit-learn` · `matplotlib` · `plotly` · `mplsoccer` · `Streamlit`
+
+### 🔭 Current Focus
+- xG match reports • Player similarity search • xT progression maps • Set-piece analyzer
+
+### 📂 Featured Projects
+- **xG Match Report** → shot maps, calibration, 1-page PDF
+- **Player Similarity Search** → “find me a Salah-type” (Streamlit)
+- **Expected Threat (xT)** → progression heatmaps
+- **Set-Piece Playbook** → corner routines dashboard
+
+### 📫 Contact
+- Email: osseilioussamabusi@gmail.com 
+- LinkedIn: [_add your link here_](https://www.linkedin.com/in/oussama-osseili)
+
+> I’m open to internships and analyst freelance briefs.
