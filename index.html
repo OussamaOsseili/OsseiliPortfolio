@@ -1,5 +1,10 @@
 <!doctype html>
-<html lang="en" x-data="win11()" x-init="init()" :class="theme">
+<html lang="en"
+      x-data="win11()"
+      x-init="init()"
+      :class="theme"
+      @mousemove.window="onDrag"
+      @mouseup.window="endDrag">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -10,7 +15,7 @@
   <!-- Alpine.js -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-  <!-- Typography approximation of Segoe UI -->
+  <!-- Segoe-ish font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
@@ -24,8 +29,6 @@
     html { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
     body { background: var(--mica-dark) fixed; }
     .light body { background: var(--mica-light) fixed; color: #0b1020; }
-    .mica { background: radial-gradient(800px 500px at 10% -10%, rgba(255,255,255,.05), rgba(255,255,255,0)),
-                      linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.15)); }
     .acrylic { backdrop-filter: blur(18px) saturate(120%); -webkit-backdrop-filter: blur(18px) saturate(120%); }
     .glass-dark { background: var(--acrylic-dark); }
     .glass-light { background: var(--acrylic-light); }
@@ -55,7 +58,7 @@
     <div class="pointer-events-none absolute inset-0"
          style="background: radial-gradient(1000px 800px at 80% 110%, rgba(255,255,255,.08), rgba(0,0,0,0));"></div>
 
-    <!-- Desktop icons (left-aligned grid) -->
+    <!-- Desktop icons -->
     <section class="absolute inset-0 p-5 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-6 content-start select-none">
       <!-- About -->
       <button class="desktop-icon flex flex-col items-center gap-2 transition"
@@ -71,7 +74,7 @@
         <span class="text-[13px] text-center">Projects</span>
       </button>
 
-      <!-- Resume -->
+      <!-- Resume (upload resume.pdf to enable) -->
       <button class="desktop-icon flex flex-col items-center gap-2 transition"
               @dblclick="openLink('/OussamaOsseili/resume.pdf')" title="Résumé (PDF)">
         <img class="w-12 h-12" alt="" src="https://api.iconify.design/fluent/document-24-regular.svg?color=white">
@@ -133,11 +136,11 @@
                :style="{left:w.x+'px', top:w.y+'px', width:w.w+'px', height:w.h+'px', zIndex:w.z}"
                @mousedown="focus(w.id)">
 
-        <!-- Titlebar (Win11 style) -->
+        <!-- Titlebar -->
         <div class="w11-title px-3 py-2 flex items-center justify-between bg-white/5 light:bg-black/[.04]"
              @mousedown.prevent="startDrag($event, w.id)">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-lg bg-white/10 light:bg-black/10"></div>
+            <img src="avatar.jpg" alt="" class="w-8 h-8 rounded-lg object-cover bg-white/10 light:bg-black/10" onerror="this.style.display='none'">
             <h3 class="font-medium text-sm" x-text="w.title"></h3>
           </div>
           <div class="flex items-center">
@@ -151,55 +154,71 @@
         <div class="p-4 overflow-auto h-[calc(100%-44px)] text-sm leading-relaxed">
           <!-- About -->
           <div x-show="w.key==='about'">
-            <h4 class="text-lg font-semibold">About — Oussama Osseili</h4>
-            <p class="mt-2 opacity-90">
-              Final-year MIAGE engineering student (EMSI Rabat). I build across
-              <b>Software</b>, <b>Data/AI</b>, <b>Cloud/DevOps</b>, and <b>ERP/BPMN</b>.
-            </p>
-            <div class="mt-4 grid sm:grid-cols-2 gap-3">
-              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <b>Languages:</b> Python, Java, TypeScript, SQL
-              </div>
-              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <b>Frameworks:</b> React, NestJS, FastAPI
-              </div>
-              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <b>Data:</b> Pandas, scikit-learn, Plotly
-              </div>
-              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <b>DevOps:</b> Docker, GitHub Actions, Linux
+            <div class="flex items-center gap-3">
+              <img src="avatar.jpg" alt="Oussama Osseili" class="w-16 h-16 rounded-xl object-cover" onerror="this.style.display='none'">
+              <div>
+                <h4 class="text-lg font-semibold">Oussama Osseili</h4>
+                <p class="opacity-80">Final-year MIAGE engineering student — EMSI Rabat</p>
+                <p class="opacity-70 text-xs">+212 6 24 74 66 25 • <a class="underline" :href="`mailto:${email}`" x-text="email"></a></p>
               </div>
             </div>
+
+            <h5 class="mt-4 font-semibold">Core Skills</h5>
+            <ul class="mt-2 grid sm:grid-cols-2 gap-2">
+              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Languages:</b> Python, Java, C, C++, SQL, JavaScript</li>
+              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Frameworks/Technos:</b> Angular, Flask, J2EE, .NET, Spring Boot</li>
+              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Databases:</b> Oracle, MySQL, SQL Server, SQLite</li>
+              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Tools:</b> Git, GitHub, Docker, Unix/Linux</li>
+              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Methods:</b> MVC, Agile/Scrum, DevOps</li>
+            </ul>
+
+            <h5 class="mt-4 font-semibold">Languages</h5>
+            <p class="opacity-90">Arabic (Native) • French (Fluent) • English (Fluent) • German (Beginner)</p>
+
+            <h5 class="mt-4 font-semibold">Education</h5>
+            <ul class="mt-2 space-y-2">
+              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <b>EMSI — Rabat</b> · MIAGE Engineering (2021–2026)
+              </li>
+              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <b>Université Ibn Tofail — FSJES Kénitra</b> · Economics (2019–2021)
+              </li>
+              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <b>Groupe Scolaire Les Mimosas du Gharb</b> · Baccalauréat Scientifique (2018–2019)
+              </li>
+            </ul>
+
+            <h5 class="mt-4 font-semibold">Certifications</h5>
+            <p class="opacity-90">
+              Oracle Database 19c Admin • Programming for Everybody (Python) • Software Design & Project Management •
+              Virtual Networks in Azure • Java as a Second Language • Introduction to Git & GitHub •
+              Docker, Kubernetes & OpenShift • React Basics
+            </p>
           </div>
 
-          <!-- Projects -->
+          <!-- Projects (from your CV) -->
           <div x-show="w.key==='projects'">
             <h4 class="text-lg font-semibold">Projects</h4>
             <div class="mt-3 grid md:grid-cols-2 gap-3">
-              <article class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <h5 class="font-medium">Full-Stack App (Auth + CRUD)</h5>
-                <p class="opacity-90 mt-1">React + NestJS + PostgreSQL • JWT roles • tested API.</p>
-                <a class="inline-block mt-2 px-3 py-1.5 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]"
-                   href="https://github.com/OussamaOsseili" target="_blank">Repository</a>
-              </article>
-              <article class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <h5 class="font-medium">ETL + EDA Notebook</h5>
-                <p class="opacity-90 mt-1">Pandas ETL, profiling, 1-page report with visuals.</p>
-                <a class="inline-block mt-2 px-3 py-1.5 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]"
-                   href="https://github.com/OussamaOsseili" target="_blank">Repository</a>
-              </article>
-              <article class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <h5 class="font-medium">CI/CD Pipeline</h5>
-                <p class="opacity-90 mt-1">Lint → Test → Build Docker → push to GHCR.</p>
-                <a class="inline-block mt-2 px-3 py-1.5 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]"
-                   href="https://github.com/OussamaOsseili" target="_blank">Repository</a>
-              </article>
-              <article class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <h5 class="font-medium">BPMN — Order-to-Cash</h5>
-                <p class="opacity-90 mt-1">Process model + mock ERP schema.</p>
-                <a class="inline-block mt-2 px-3 py-1.5 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]"
-                   href="https://github.com/OussamaOsseili" target="_blank">Repository</a>
-              </article>
+              <template x-for="p in projects" :key="p.title">
+                <article class="p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
+                  <h5 class="font-medium" x-text="p.title"></h5>
+                  <p class="opacity-90 mt-1" x-text="p.desc"></p>
+                  <p class="opacity-70 mt-1 text-xs" x-text="'Stack: ' + p.stack"></p>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    <template x-if="p.repo"><a class="px-3 py-1.5 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]" :href="p.repo" target="_blank">Repository</a></template>
+                    <template x-if="p.demo"><a class="px-3 py-1.5 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]" :href="p.demo" target="_blank">Live Demo</a></template>
+                  </div>
+                </article>
+              </template>
+            </div>
+
+            <h5 class="mt-5 font-semibold">Experience</h5>
+            <div class="mt-2 p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
+              <b>Python Full-Stack Developer (Django/Flask) — PROWED Media SARL</b> • 4 weeks
+              <p class="opacity-90 mt-1">
+                Built and improved internal platforms; real-time supervision and data centralization to improve sales & operations.
+              </p>
             </div>
           </div>
 
@@ -216,6 +235,7 @@
               <a class="px-3 py-2 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]"
                  href="https://github.com/OussamaOsseili" target="_blank">GitHub</a>
             </div>
+            <p class="mt-2 opacity-80 text-sm">Phone: +212 6 24 74 66 25</p>
           </div>
 
           <!-- Sections -->
@@ -254,13 +274,13 @@
         <h5 class="mt-4 text-sm opacity-80">Pinned</h5>
         <div class="mt-2 grid grid-cols-6 gap-3 text-[13px]">
           <button class="flex flex-col items-center gap-1 task-icon" @click="openApp('about')">
-            <img class="w-7 h-7" src="https://api.iconify.design/fluent/person-12-regular.svg?color=white"><span>About</span>
+            <img class="w-7 h-7" src="avatar.jpg" onerror="this.src='https://api.iconify.design/fluent/person-12-regular.svg?color=white'"><span>About</span>
           </button>
           <button class="flex flex-col items-center gap-1 task-icon" @click="openApp('projects')">
             <img class="w-7 h-7" src="https://api.iconify.design/fluent/apps-24-regular.svg?color=white"><span>Projects</span>
           </button>
           <button class="flex flex-col items-center gap-1 task-icon" @click="openApp('data')">
-            <img class="w-7 h-7" src="https://api.iconify.design/fluent/data-area-24-regular.svg?color=white"><span>Data & AI</span>
+            <img class="w-7 h-7" src="https://api.iconify.design/fluent/data-area-24-regular.svg?color=white"><span>Data</span>
           </button>
           <button class="flex flex-col items-center gap-1 task-icon" @click="openApp('devops')">
             <img class="w-7 h-7" src="https://api.iconify.design/mdi/docker.svg?color=white"><span>DevOps</span>
@@ -275,7 +295,7 @@
 
         <div class="mt-4 flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <div class="w-9 h-9 rounded-full bg-white/10 light:bg-black/[.06]"></div>
+            <img src="avatar.jpg" alt="" class="w-9 h-9 rounded-full object-cover bg-white/10 light:bg-black/[.06]" onerror="this.style.display='none'">
             <div>
               <div class="font-medium leading-tight">Oussama Osseili</div>
               <div class="text-xs opacity-70">MIAGE — EMSI Rabat</div>
@@ -287,7 +307,7 @@
       </div>
     </div>
 
-    <!-- Taskbar (centered icons) -->
+    <!-- Taskbar -->
     <footer class="taskbar acrylic absolute bottom-0 left-0 right-0"
             :class="theme==='light' ? 'glass-light' : 'glass-dark'">
       <div class="max-w-6xl mx-auto h-full px-3 flex items-center justify-between gap-3">
@@ -297,11 +317,9 @@
         <div class="flex items-center gap-2">
           <!-- Start button -->
           <button class="task-icon" @click="startOpen=!startOpen" :aria-pressed="startOpen">
-            <!-- Simple Windows-ish logo -->
             <svg width="22" height="22" viewBox="0 0 48 48"><path fill="currentColor" d="M22 6v16H6V8.7zm20 0v18H24V6zM22 26v16L6 39.3V26zm20 0v16H24V26z"/></svg>
           </button>
-
-          <!-- Pinned apps -->
+          <!-- Pinned -->
           <button class="task-icon" title="File Explorer (Projects)" @click="openApp('projects')">
             <img class="w-6 h-6" src="https://api.iconify.design/fluent/folder-24-regular.svg?color=white">
           </button>
@@ -313,7 +331,7 @@
           </button>
         </div>
 
-        <!-- System tray -->
+        <!-- Tray -->
         <div class="flex-1 flex items-center justify-end gap-3 text-sm">
           <div class="px-3 py-1 rounded-lg bg-white/10 light:bg-black/[.06] border border-white/10 light:border-black/10">
             <span x-text="now"></span>
@@ -326,32 +344,45 @@
   <script>
     function win11(){
       return {
+        // state
         theme: (localStorage.getItem('theme') || 'dark'),
         startOpen: false,
         now: '',
         z: 10,
-        email: 'osseilioussamabusi@gmail.com', // <-- put your email
-        linkedin: 'https://www.linkedin.com/in/oussama-osseili', // <-- put your LinkedIn
+        email: 'osseilioussamabusi@gmail.com', // you gave this; keeping it as primary contact
+        linkedin: 'https://www.linkedin.com/in/oussama-osseili',
 
+        // windows registry
         windows: [
-          { id:1, key:'about',    title:'About — Oussama Osseili', x:120, y:100, w:640, h:380, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:2, key:'projects', title:'Projects',                 x:220, y:140, w:760, h:440, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:3, key:'contact',  title:'Contact',                  x:260, y:180, w:620, h:260, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:4, key:'data',     title:'Data & AI',                x:300, y:160, w:560, h:280, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:5, key:'devops',   title:'Cloud & DevOps',           x:340, y:200, w:560, h:280, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:6, key:'erp',      title:'ERP / BPMN',               x:380, y:220, w:560, h:280, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:7, key:'sports',   title:'Sports Analytics',         x:420, y:140, w:560, h:300, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:1, key:'about',    title:'About — Oussama Osseili', x:120, y:100, w:640, h:420, z:1, open:true,  minimized:false, max:false, prev:null },
+          { id:2, key:'projects', title:'Projects',                 x:220, y:160, w:760, h:480, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:3, key:'contact',  title:'Contact',                  x:260, y:200, w:620, h:280, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:4, key:'data',     title:'Data & AI',                x:300, y:180, w:560, h:300, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:5, key:'devops',   title:'Cloud & DevOps',           x:340, y:220, w:560, h:300, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:6, key:'erp',      title:'ERP / BPMN',               x:380, y:240, w:560, h:300, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:7, key:'sports',   title:'Sports Analytics',         x:420, y:200, w:560, h:320, z:1, open:false, minimized:false, max:false, prev:null },
         ],
 
+        // projects from your CV
+        projects: [
+          { title:'Plateforme achat/vente voiture', stack:'Django, Python, JS, HTML, PHP', desc:'App intégrée de gestion des ventes/achats avec supervision en temps réel et centralisation des données.', repo:'' },
+          { title:'Application de E-learning', stack:'Python, Flask', desc:'Plateforme d’apprentissage interactive avec personnalisation, accessibilité et collaboration.', repo:'' },
+          { title:'Application de gestion de restaurant', stack:'Python, Flask', desc:'Gestion complète des commandes et utilisateurs (clients, serveurs, admin).', repo:'' },
+          { title:'Gestion Pharmacie', stack:'.NET (ASP.NET, Blazor)', desc:'Suivi temps réel des stocks, patients & médicaments, optimisation des ventes & traçabilité.', repo:'' },
+          { title:'Gestion Bibliothèque', stack:'Java, J2EE, Spring', desc:'Suivi des prêts/retours, centralisation ouvrages/adhérents, gestion des réservations.', repo:'' },
+          // keep the earlier general projects as placeholders until you link repos:
+          { title:'Full-Stack App (Auth + CRUD)', stack:'React, NestJS, PostgreSQL, JWT', desc:'Starter propre avec API testée et RBAC.', repo:'https://github.com/OussamaOsseili' },
+          { title:'CI/CD Pipeline', stack:'Docker, GitHub Actions', desc:'Lint→Test→Build→Publish image (GHCR).', repo:'https://github.com/OussamaOsseili' },
+        ],
+
+        // lifecycle
         init(){
           document.documentElement.classList.toggle('light', this.theme==='light');
           this.tick(); setInterval(()=>this.tick(), 1000);
         },
         tick(){
           const d = new Date();
-          const hh = String(d.getHours()).padStart(2,'0');
-          const mm = String(d.getMinutes()).padStart(2,'0');
-          this.now = `${hh}:${mm}`;
+          this.now = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
         },
         toggleTheme(){
           this.theme = (this.theme==='dark') ? 'light' : 'dark';
@@ -371,7 +402,7 @@
           const w=this.windows.find(x=>x.id===id); if(!w) return;
           if(!w.max){
             w.prev = {x:w.x, y:w.y, w:w.w, h:w.h};
-            w.x=12; w.y=12; w.w=window.innerWidth-24; w.h=window.innerHeight-24-52; // leave taskbar
+            w.x=12; w.y=12; w.w=window.innerWidth-24; w.h=window.innerHeight-24-52;
             w.max=true; this.focus(id);
           } else {
             const p=w.prev||{x:100,y:100,w:600,h:400};
@@ -380,46 +411,33 @@
         },
         focus(id){ const w=this.windows.find(x=>x.id===id); if(!w) return; this.z+=1; w.z=this.z; },
 
-        // drag
+        // dragging (fixed)
         dragState:null,
         startDrag(e,id){
           const w=this.windows.find(x=>x.id===id); if(!w || w.max) return;
           this.focus(id);
           this.dragState = { id, offX:e.clientX-w.x, offY:e.clientY-w.y };
           document.body.classList.add('dragging');
-          window.addEventListener('mousemove', this.onDrag);
-          window.addEventListener('mouseup', this.endDrag);
         },
-        onDrag:(e)=>{},
-        endDrag:()=>{},
+        onDrag(e){
+          if(!this.dragState) return;
+          const w = this.windows.find(x=>x.id===this.dragState.id); if(!w) return;
+          const nx = e.clientX - this.dragState.offX;
+          const ny = e.clientY - this.dragState.offY;
+          const maxX = window.innerWidth - 120;
+          const maxY = window.innerHeight - 120;
+          w.x = Math.max(-w.w+160, Math.min(nx, maxX));
+          w.y = Math.max(0, Math.min(ny, maxY));
+        },
+        endDrag(){
+          if(!this.dragState) return;
+          this.dragState = null;
+          document.body.classList.remove('dragging');
+        },
 
         copy(text){ navigator.clipboard.writeText(text); alert('Copied to clipboard!'); },
       }
     }
-
-    // attach performant drag handlers
-    window.addEventListener('alpine:init', () => {
-      const app = Alpine.$data(document.documentElement);
-
-      app.onDrag = (e) => {
-        if(!app.dragState) return;
-        const w = app.windows.find(x=>x.id===app.dragState.id);
-        if(!w) return;
-        const nx = e.clientX - app.dragState.offX;
-        const ny = e.clientY - app.dragState.offY;
-        const maxX = window.innerWidth - 120;
-        const maxY = window.innerHeight - 120;
-        w.x = Math.max(-w.w+160, Math.min(nx, maxX));
-        w.y = Math.max(0, Math.min(ny, maxY));
-      };
-
-      app.endDrag = () => {
-        app.dragState = null;
-        document.body.classList.remove('dragging');
-        window.removeEventListener('mousemove', app.onDrag);
-        window.removeEventListener('mouseup', app.endDrag);
-      };
-    });
   </script>
 </body>
 </html>
