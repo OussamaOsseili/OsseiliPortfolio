@@ -190,13 +190,13 @@
 
             <h5 class="mt-4 font-semibold">Certifications</h5>
             <p class="opacity-90">
-              Oracle Database 19c Admin • Programming for Everybody (Python) • Software Design & Project Management •
-              Virtual Networks in Azure • Java as a Second Language • Introduction to Git & GitHub •
+              Oracle DB 19c Admin • Programming for Everybody (Python) • Software Design & PM •
+              Virtual Networks in Azure • Java as a Second Language • Intro to Git & GitHub •
               Docker, Kubernetes & OpenShift • React Basics
             </p>
           </div>
 
-          <!-- Projects (from your CV) -->
+          <!-- Projects -->
           <div x-show="w.key==='projects'">
             <h4 class="text-lg font-semibold">Projects</h4>
             <div class="mt-3 grid md:grid-cols-2 gap-3">
@@ -216,9 +216,7 @@
             <h5 class="mt-5 font-semibold">Experience</h5>
             <div class="mt-2 p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
               <b>Python Full-Stack Developer (Django/Flask) — PROWED Media SARL</b> • 4 weeks
-              <p class="opacity-90 mt-1">
-                Built and improved internal platforms; real-time supervision and data centralization to improve sales & operations.
-              </p>
+              <p class="opacity-90 mt-1">Développement & amélioration de plateformes internes; supervision en temps réel et centralisation des données pour améliorer ventes & opérations.</p>
             </div>
           </div>
 
@@ -349,7 +347,7 @@
         startOpen: false,
         now: '',
         z: 10,
-        email: 'osseilioussamabusi@gmail.com', // you gave this; keeping it as primary contact
+        email: 'osseilioussamabusi@gmail.com',
         linkedin: 'https://www.linkedin.com/in/oussama-osseili',
 
         // windows registry
@@ -363,16 +361,44 @@
           { id:7, key:'sports',   title:'Sports Analytics',         x:420, y:200, w:560, h:320, z:1, open:false, minimized:false, max:false, prev:null },
         ],
 
-        // projects from your CV
+        // your real projects (demo ones removed)
         projects: [
-          { title:'Plateforme achat/vente voiture', stack:'Django, Python, JS, HTML, PHP', desc:'App intégrée de gestion des ventes/achats avec supervision en temps réel et centralisation des données.', repo:'' },
-          { title:'Application de E-learning', stack:'Python, Flask', desc:'Plateforme d’apprentissage interactive avec personnalisation, accessibilité et collaboration.', repo:'' },
-          { title:'Application de gestion de restaurant', stack:'Python, Flask', desc:'Gestion complète des commandes et utilisateurs (clients, serveurs, admin).', repo:'' },
-          { title:'Gestion Pharmacie', stack:'.NET (ASP.NET, Blazor)', desc:'Suivi temps réel des stocks, patients & médicaments, optimisation des ventes & traçabilité.', repo:'' },
-          { title:'Gestion Bibliothèque', stack:'Java, J2EE, Spring', desc:'Suivi des prêts/retours, centralisation ouvrages/adhérents, gestion des réservations.', repo:'' },
-          // keep the earlier general projects as placeholders until you link repos:
-          { title:'Full-Stack App (Auth + CRUD)', stack:'React, NestJS, PostgreSQL, JWT', desc:'Starter propre avec API testée et RBAC.', repo:'https://github.com/OussamaOsseili' },
-          { title:'CI/CD Pipeline', stack:'Docker, GitHub Actions', desc:'Lint→Test→Build→Publish image (GHCR).', repo:'https://github.com/OussamaOsseili' },
+          {
+            title:'Plateforme maintenance HTB — ONEE (Stage 4ᵉ année)',
+            stack:'Spring Boot 3.5.4 (Java 17, JPA, SQLite, REST) · React (Vite), Tailwind, Axios, React Router',
+            desc:'Remplacement du suivi Excel par une app web moderne : RBAC, gestion équipements, planning, import Excel (Apache POI), reporting PDF, dashboards, schéma unifilaire.',
+            repo:'', demo:''
+          },
+          {
+            title:'Plateforme achat/vente voiture',
+            stack:'Django, Python, JS, HTML, PHP',
+            desc:'Gestion ventes/achats avec supervision temps réel et centralisation des données.',
+            repo:'', demo:''
+          },
+          {
+            title:'Application de E-learning',
+            stack:'Python, Flask',
+            desc:'Plateforme d’apprentissage avec personnalisation, accessibilité et collaboration.',
+            repo:'', demo:''
+          },
+          {
+            title:'Application de gestion de restaurant',
+            stack:'Python, Flask',
+            desc:'Gestion commandes + rôles (client, serveur, admin) et back-office.',
+            repo:'', demo:''
+          },
+          {
+            title:'Gestion Pharmacie',
+            stack:'.NET (ASP.NET/Blazor)',
+            desc:'Suivi stocks, patients & médicaments; optimisation des ventes et traçabilité.',
+            repo:'', demo:''
+          },
+          {
+            title:'Gestion Bibliothèque',
+            stack:'Java, J2EE, Spring',
+            desc:'Prêts/retours, réservations, centralisation ouvrages/adhérents.',
+            repo:'', demo:''
+          }
         ],
 
         // lifecycle
