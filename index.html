@@ -1,1 +1,310 @@
+<!doctype html>
+<html lang="en" x-data="portfolioApp()" x-init="init()" :class="theme">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Oussama Osseili — Portfolio</title>
+
+  <!-- TailwindCSS CDN (no build) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js for interactivity -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <style>
+    /* subtle card hover */
+    .card { transition: transform .2s ease, box-shadow .2s ease; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+    .glass { backdrop-filter: blur(8px); background: rgba(255,255,255,.6); }
+    .dark .glass { background: rgba(17,24,39,.6); }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+
+  <!-- Header / Nav -->
+  <header class="sticky top-0 z-50 border-b border-gray-200/60 dark:border-gray-800/60 bg-white/70 dark:bg-gray-900/70 glass">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-fuchsia-500 to-indigo-500"></div>
+        <div>
+          <h1 class="font-semibold leading-tight">Oussama Osseili</h1>
+          <p class="text-sm text-gray-500 dark:text-gray-400">MIAGE · Software • Data/AI • Cloud/DevOps • ERP</p>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#projects" class="hover:opacity-80">Projects</a>
+        <a href="#about" class="hover:opacity-80">About</a>
+        <a href="#contact" class="hover:opacity-80">Contact</a>
+        <button @click="toggleTheme" class="px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-800">
+          <span x-show="theme==='light'">🌙 Dark</span>
+          <span x-show="theme==='dark'">☀️ Light</span>
+        </button>
+      </nav>
+
+      <button class="md:hidden px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-800" @click="mobileOpen=!mobileOpen">☰</button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden" x-show="mobileOpen" x-transition>
+      <div class="max-w-6xl mx-auto px-4 pb-3 flex flex-col gap-2 text-sm">
+        <a href="#projects" @click="mobileOpen=false" class="py-2">Projects</a>
+        <a href="#about" @click="mobileOpen=false" class="py-2">About</a>
+        <a href="#contact" @click="mobileOpen=false" class="py-2">Contact</a>
+        <button @click="toggleTheme" class="px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-800">
+          <span x-show="theme==='light'">🌙 Dark</span>
+          <span x-show="theme==='dark'">☀️ Light</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="max-w-6xl mx-auto px-4 py-10 md:py-14">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-bold leading-tight">
+          Engineer in training. Builder by habit.<br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-500">
+            Software · Data/AI · Cloud/DevOps · ERP
+          </span>
+        </h2>
+        <p class="mt-4 text-gray-600 dark:text-gray-300">
+          I’m Oussama Osseili (EMSI Rabat — MIAGE). I ship practical projects:
+          full-stack apps, data pipelines, CI/CD, and process modelling.
+        </p>
+        <div class="mt-6 flex gap-3">
+          <a href="#projects" class="px-4 py-2 rounded-xl bg-indigo-600 text-white hover:opacity-90">View Projects</a>
+          <a href="#contact" class="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Contact</a>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="aspect-video rounded-2xl bg-gradient-to-br from-indigo-600/20 to-fuchsia-500/20 border border-indigo-600/20 dark:border-fuchsia-500/20"></div>
+        <div class="absolute -bottom-4 -right-4 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow">
+          <span class="text-sm">Deploys on GitHub Pages ⚡</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Controls -->
+  <section id="projects" class="max-w-6xl mx-auto px-4">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <div>
+        <h3 class="text-2xl font-semibold">Projects</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Filter by area, or search by title/tech.</p>
+      </div>
+      <div class="flex flex-col md:flex-row gap-3">
+        <div class="flex gap-2 flex-wrap">
+          <button @click="setFilter('All')" :class="chipClass('All')" class="px-3 py-1.5 rounded-full text-sm border">All</button>
+          <button @click="setFilter('Software')" :class="chipClass('Software')" class="px-3 py-1.5 rounded-full text-sm border">Software</button>
+          <button @click="setFilter('Data/AI')" :class="chipClass('Data/AI')" class="px-3 py-1.5 rounded-full text-sm border">Data/AI</button>
+          <button @click="setFilter('Cloud/DevOps')" :class="chipClass('Cloud/DevOps')" class="px-3 py-1.5 rounded-full text-sm border">Cloud/DevOps</button>
+          <button @click="setFilter('ERP/Business')" :class="chipClass('ERP/Business')" class="px-3 py-1.5 rounded-full text-sm border">ERP/Business</button>
+          <button @click="setFilter('Sports Analytics')" :class="chipClass('Sports Analytics')" class="px-3 py-1.5 rounded-full text-sm border">Sports</button>
+        </div>
+        <input type="search" placeholder="Search projects…" class="px-3 py-2 rounded-xl border dark:border-gray-700"
+               x-model="q" @input.debounce.200ms="applyFilters" />
+      </div>
+    </div>
+
+    <!-- Projects grid -->
+    <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <template x-for="p in visible" :key="p.id">
+        <article class="card rounded-2xl border border-gray-200 dark:border-gray-800 p-4 bg-white dark:bg-gray-800">
+          <div class="flex items-center justify-between gap-3">
+            <h4 class="font-semibold" x-text="p.title"></h4>
+            <span class="text-xs px-2 py-1 rounded-full border dark:border-gray-700" x-text="p.area"></span>
+          </div>
+          <p class="mt-2 text-sm text-gray-600 dark:text-gray-300 line-clamp-3" x-text="p.desc"></p>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+            <template x-for="t in p.tech">
+              <span class="text-xs px-2 py-1 rounded-lg bg-gray-100 dark:bg-gray-700/60" x-text="t"></span>
+            </template>
+          </div>
+
+          <div class="mt-4 flex items-center gap-2">
+            <a :href="p.repo" target="_blank" class="px-3 py-1.5 text-sm rounded-xl border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">Repo</a>
+            <template x-if="p.demo">
+              <a :href="p.demo" target="_blank" class="px-3 py-1.5 text-sm rounded-xl border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">Demo</a>
+            </template>
+            <button class="ml-auto px-3 py-1.5 text-sm rounded-xl bg-indigo-600 text-white hover:opacity-90"
+                    @click="openModal(p)">Details</button>
+          </div>
+        </article>
+      </template>
+    </div>
+
+    <!-- Empty state -->
+    <div class="mt-10 text-center text-gray-500 dark:text-gray-400" x-show="visible.length===0">
+      No projects found. Try another filter or search.
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="max-w-6xl mx-auto px-4 py-16">
+    <h3 class="text-2xl font-semibold">About</h3>
+    <div class="mt-4 grid md:grid-cols-2 gap-6">
+      <div class="rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
+        <h4 class="font-medium">Profile</h4>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          Final-year MIAGE engineering student at EMSI Rabat. Comfortable across software, data, and cloud.
+          Curious about ERP/business processes. I focus on shipping clean, documented, reproducible work.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
+        <h4 class="font-medium">Skills</h4>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          Python, Java, TypeScript, SQL, React, NestJS · Pandas, scikit-learn · Docker, Linux, GitHub Actions ·
+          BPMN/UML · Basics of Azure/AWS · (Optional) Football analytics with mplsoccer/Streamlit.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="max-w-6xl mx-auto px-4 pb-20">
+    <h3 class="text-2xl font-semibold">Contact</h3>
+    <div class="mt-4 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 flex flex-col md:flex-row items-center gap-4">
+      <input type="text" class="flex-1 px-3 py-2 rounded-xl border dark:border-gray-700 w-full"
+             :value="email" readonly>
+      <button @click="copyEmail"
+              class="px-4 py-2 rounded-xl bg-green-600 text-white hover:opacity-90">Copy Email</button>
+      <a :href="linkedin" target="_blank"
+         class="px-4 py-2 rounded-xl border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">LinkedIn</a>
+      <a :href="github" target="_blank"
+         class="px-4 py-2 rounded-xl border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">GitHub</a>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div x-show="modal" x-transition
+       class="fixed inset-0 z-50 flex items-end md:items-center justify-center">
+    <div class="absolute inset-0 bg-black/50" @click="modal=false"></div>
+    <div class="relative w-full md:w-[700px] max-h-[80vh] overflow-auto rounded-t-2xl md:rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-600 to-fuchsia-500"></div>
+        <div class="flex-1">
+          <h4 class="text-xl font-semibold" x-text="active?.title"></h4>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400" x-text="active?.area"></p>
+        </div>
+        <button @click="modal=false" class="text-2xl leading-none">×</button>
+      </div>
+      <p class="mt-4 text-sm text-gray-700 dark:text-gray-200" x-text="active?.long"></p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <template x-for="t in active?.tech">
+          <span class="text-xs px-2 py-1 rounded-lg bg-gray-100 dark:bg-gray-700/60" x-text="t"></span>
+        </template>
+      </div>
+      <div class="mt-5 flex gap-2">
+        <a :href="active?.repo" target="_blank" class="px-3 py-2 rounded-xl border dark:border-gray-700">Repository</a>
+        <template x-if="active?.demo">
+          <a :href="active?.demo" target="_blank" class="px-3 py-2 rounded-xl border dark:border-gray-700">Live Demo</a>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <!-- App script -->
+  <script>
+    function portfolioApp() {
+      return {
+        theme: (localStorage.getItem('theme') || 'light'),
+        mobileOpen: false,
+        filter: 'All',
+        q: '',
+        email: 'your.email@example.com',
+        linkedin: 'https://www.linkedin.com/in/your-handle',
+        github: 'https://github.com/OussamaOsseili',
+
+        projects: [
+          {
+            id: 1,
+            title: 'Full-Stack App (Auth + CRUD)',
+            area: 'Software',
+            tech: ['React','NestJS','TypeScript','PostgreSQL','JWT'],
+            desc: 'A clean full-stack starter with modular backend, role-based access, and tested API.',
+            long: 'Backend with NestJS (modules, guards, DTO validation), PostgreSQL via TypeORM, JWT auth with roles. React frontend with protected routes, pagination, and forms. Dockerized for local dev and CI tests.',
+            repo: 'https://github.com/OussamaOsseili', demo: ''
+          },
+          {
+            id: 2,
+            title: 'ETL + EDA Notebook',
+            area: 'Data/AI',
+            tech: ['Python','Pandas','Plotly'],
+            desc: 'A small pipeline to ingest a public dataset, clean, profile, and visualize.',
+            long: 'Pandas-based ETL with a reproducible notebook. Includes profiling, feature engineering, and a short PDF report with 4–6 plots and insights.',
+            repo: 'https://github.com/OussamaOsseili', demo: ''
+          },
+          {
+            id: 3,
+            title: 'CI/CD with GitHub Actions',
+            area: 'Cloud/DevOps',
+            tech: ['Docker','GitHub Actions','YAML'],
+            desc: 'Lint → Test → Build pipeline; pushes container to registry.',
+            long: 'Multi-job pipeline for a sample service: Node tests on push, build Docker image, push to GHCR, and deploy to a staging environment (Pages/Render).',
+            repo: 'https://github.com/OussamaOsseili', demo: ''
+          },
+          {
+            id: 4,
+            title: 'BPMN Order-to-Cash',
+            area: 'ERP/Business',
+            tech: ['BPMN','Process'],
+            desc: 'Documented process with roles, risks/controls, and handoffs.',
+            long: 'Diagrams + short memo outlining actors (Sales, Warehouse, Finance), events, and data objects. Includes a basic mock ERP schema for Orders/Items/Invoices.',
+            repo: 'https://github.com/OussamaOsseili', demo: ''
+          },
+          {
+            id: 5,
+            title: 'Sports Analytics — xG/xT Mini',
+            area: 'Sports Analytics',
+            tech: ['Python','mplsoccer','scikit-learn'],
+            desc: 'Simple xG baseline + xT heatmap on public data.',
+            long: 'StatsBomb/Metrica sample data. Logistic xG baseline with calibration check, plus xT grid and team heatmaps. One-pager report export.',
+            repo: 'https://github.com/OussamaOsseili', demo: ''
+          }
+        ],
+
+        visible: [],
+        modal: false,
+        active: null,
+
+        init() {
+          this.applyFilters();
+          // theme system
+          document.documentElement.classList.toggle('dark', this.theme === 'dark');
+        },
+
+        toggleTheme() {
+          this.theme = (this.theme === 'light') ? 'dark' : 'light';
+          localStorage.setItem('theme', this.theme);
+          document.documentElement.classList.toggle('dark', this.theme === 'dark');
+        },
+
+        setFilter(f) { this.filter = f; this.applyFilters(); },
+        chipClass(f) {
+          const active = this.filter === f;
+          return (active ? 'bg-indigo-600 text-white border-indigo-600' : 'border-gray-200 dark:border-gray-700');
+        },
+
+        applyFilters() {
+          const q = this.q.trim().toLowerCase();
+          const f = this.filter;
+          this.visible = this.projects.filter(p => {
+            const matchesF = (f === 'All') || p.area === f;
+            const matchesQ = !q || p.title.toLowerCase().includes(q) || p.tech.join(' ').toLowerCase().includes(q);
+            return matchesF && matchesQ;
+          });
+        },
+
+        openModal(p) { this.active = p; this.modal = true; },
+        copyEmail() {
+          navigator.clipboard.writeText(this.email);
+          alert('Email copied to clipboard!');
+        }
+      }
+    }
+  </script>
+</body>
+</html>
 
