@@ -21,14 +21,35 @@
 
   <style>
     :root{
-      --mica-dark: radial-gradient(1200px 800px at 10% -10%, #1b2434 0%, #0f172a 60%, #0b1220 100%);
-      --mica-light: radial-gradient(1200px 800px at 10% -10%, #f6f7fb 0%, #e9edf7 60%, #dde3f3 100%);
       --acrylic-dark: rgba(17, 24, 39, .6);
       --acrylic-light: rgba(255, 255, 255, .65);
     }
     html { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-    body { background: var(--mica-dark) fixed; }
-    .light body { background: var(--mica-light) fixed; color: #0b1020; }
+
+    /* Wallpaper: use your wallpaper.jpg */
+    body { background: transparent; }
+    .light body { background: transparent; color: #0b1020; }
+
+    /* Wallpaper layer */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -2; /* behind everything */
+      background: center / cover no-repeat fixed url('wallpaper.jpg');
+      filter: saturate(105%) contrast(105%);
+    }
+    /* Subtle mica-like tint so glass reads well on busy images */
+    body::after{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(1200px 800px at 10% -10%, rgba(255,255,255,.06), rgba(0,0,0,.24));
+      mix-blend-mode: soft-light;
+    }
+
     .acrylic { backdrop-filter: blur(18px) saturate(120%); -webkit-backdrop-filter: blur(18px) saturate(120%); }
     .glass-dark { background: var(--acrylic-dark); }
     .glass-light { background: var(--acrylic-light); }
@@ -54,7 +75,7 @@
   <!-- Desktop -->
   <main class="relative h-[100svh] overflow-hidden">
 
-    <!-- Wallpaper vignette -->
+    <!-- Vignette for depth -->
     <div class="pointer-events-none absolute inset-0"
          style="background: radial-gradient(1000px 800px at 80% 110%, rgba(255,255,255,.08), rgba(0,0,0,0));"></div>
 
@@ -136,11 +157,11 @@
                :style="{left:w.x+'px', top:w.y+'px', width:w.w+'px', height:w.h+'px', zIndex:w.z}"
                @mousedown="focus(w.id)">
 
-        <!-- Titlebar (bigger avatar) -->
+        <!-- Titlebar (small avatar; About photo is bigger in content) -->
         <div class="w11-title px-3 py-2 flex items-center justify-between bg-white/5 light:bg-black/[.04]"
              @mousedown.prevent="startDrag($event, w.id)">
           <div class="flex items-center gap-3">
-            <img src="avatar.jpg" alt="" class="w-10 h-10 rounded-lg object-cover bg-white/10 light:bg-black/10" onerror="this.style.display='none'">
+            <img src="avatar.jpg" alt="" class="w-8 h-8 rounded-lg object-cover bg-white/10 light:bg-black/10" onerror="this.style.display='none'">
             <h3 class="font-medium text-sm md:text-base" x-text="w.title"></h3>
           </div>
           <div class="flex items-center">
@@ -155,8 +176,8 @@
           <!-- About -->
           <div x-show="w.key==='about'">
             <div class="flex items-center gap-4">
-              <!-- Bigger portrait -->
-             <img src="avatar.jpg" alt="Oussama Osseili" class="w-28 h-28 rounded-2xl object-cover" onerror="this.style.display='none'">
+              <!-- Bigger portrait only here -->
+              <img src="avatar.jpg" alt="Oussama Osseili" class="w-40 h-40 rounded-2xl object-cover" onerror="this.style.display='none'">
               <div>
                 <h4 class="text-xl font-semibold">Oussama Osseili</h4>
                 <p class="opacity-80">Final-year MIAGE engineering student — EMSI Rabat</p>
@@ -189,7 +210,7 @@
               </li>
             </ul>
 
-            <!-- Certifications now boxed like Education -->
+            <!-- Certifications boxed like Education -->
             <h5 class="mt-5 font-semibold">Certifications</h5>
             <ul class="mt-2 grid sm:grid-cols-2 gap-2">
               <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">Oracle Database 19c Administration</li>
@@ -221,40 +242,40 @@
             </div>
 
             <!-- Experience -->
-<h5 class="mt-5 font-semibold">Experience</h5>
-<div class="mt-2 grid md:grid-cols-2 gap-3">
-  <!-- ONEE -->
-  <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
-    <b>Project Intern — Office National de l’Électricité et de l’Eau Potable (ONEE), Branche Électricité</b>
-    <span class="opacity-70"> • juil. 2025 – sept. 2025 · 3 mois · Maroc · Sur site</span>
-    <p class="opacity-90 mt-2">
-      Plateforme web de <b>maintenance des postes HTB</b> pour remplacer le suivi Excel.
-    </p>
-    <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-      <li>RBAC (authentification, rôles : Admin, Chef Maintenance, Chef Contrôle…)</li>
-      <li>Gestion équipements (CRUD, catégories, états Vert/Jaune/Rouge, historique)</li>
-      <li>Planification (calendrier, ordres de travail, priorités)</li>
-      <li>Import Excel (.xlsx) via <b>Apache POI</b>, validation & logs</li>
-      <li>Reporting PDF, dashboards, <b>schéma unifilaire</b> interactif</li>
-    </ul>
-    <p class="opacity-80 text-xs mt-2">
-      Stack : <b>Spring Boot 3.5.4 (Java 17, JPA, SQLite, REST)</b> · <b>React (Vite)</b>, Tailwind, Axios, React Router
-    </p>
-  </div>
+            <h5 class="mt-5 font-semibold">Experience</h5>
+            <div class="mt-2 grid md:grid-cols-2 gap-3">
+              <!-- ONEE -->
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
+                <b>Project Intern — Office National de l’Électricité et de l’Eau Potable (ONEE), Branche Électricité</b>
+                <span class="opacity-70"> • juil. 2025 – sept. 2025 · 3 mois · Maroc · Sur site</span>
+                <p class="opacity-90 mt-2">
+                  Plateforme web de <b>maintenance des postes HTB</b> pour remplacer le suivi Excel.
+                </p>
+                <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+                  <li>RBAC : authentification & rôles (Admin, Chef Maintenance, Chef Contrôle…)</li>
+                  <li>Gestion équipements : CRUD, catégories, états Vert/Jaune/Rouge, historique</li>
+                  <li>Planification : calendrier, ordres de travail, priorités</li>
+                  <li>Import Excel (.xlsx) via <b>Apache POI</b>, validation & logs</li>
+                  <li>Reporting PDF, dashboards, <b>schéma unifilaire</b> interactif</li>
+                </ul>
+                <p class="opacity-80 text-xs mt-2">
+                  Stack : <b>Spring Boot 3.5.4 (Java 17, JPA, SQLite, REST)</b> · <b>React (Vite)</b>, Tailwind, Axios, React Router
+                </p>
+              </div>
 
-  <!-- PROWED -->
-  <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
-    <b>Python Full-Stack Developer (Django/Flask) — PROWED Media SARL</b>
-    <span class="opacity-70"> • 4 semaines</span>
-    <p class="opacity-90 mt-2">
-      Développement et amélioration de plateformes internes ; supervision temps réel et centralisation des données pour optimiser ventes & opérations.
-    </p>
-    <p class="opacity-80 text-xs mt-2">
-      Stack : <b>Django / Flask</b>, Python, JS, Git, Docker
-    </p>
-  </div>
-</div>
-
+              <!-- PROWED -->
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
+                <b>Python Full-Stack Developer (Django/Flask) — PROWED Media SARL</b>
+                <span class="opacity-70"> • 4 semaines</span>
+                <p class="opacity-90 mt-2">
+                  Développement et amélioration de plateformes internes ; supervision temps réel et centralisation des données pour optimiser ventes & opérations.
+                </p>
+                <p class="opacity-80 text-xs mt-2">
+                  Stack : <b>Django / Flask</b>, Python, JS, Git, Docker
+                </p>
+              </div>
+            </div>
+          </div>
 
           <!-- Contact -->
           <div x-show="w.key==='contact'">
@@ -293,7 +314,7 @@
       </section>
     </template>
 
-    <!-- Start menu (bigger avatar) -->
+    <!-- Start menu (kept compact avatar) -->
     <div x-show="startOpen" x-transition x-cloak
          class="absolute left-1/2 -translate-x-1/2 bottom-[68px] w-[700px] max-w-[90vw] acrylic"
          :class="theme==='light' ? 'glass-light' : 'glass-dark'"
@@ -308,8 +329,7 @@
         <h5 class="mt-4 text-sm opacity-80">Pinned</h5>
         <div class="mt-2 grid grid-cols-6 gap-3 text-[13px]">
           <button class="flex flex-col items-center gap-1 task-icon" @click="openApp('about')">
-            <img class="w-10 h-10 rounded-md object-cover" src="avatar.jpg"
-                 onerror="this.src='https://api.iconify.design/fluent/person-12-regular.svg?color=white'"><span>About</span>
+            <img class="w-7 h-7" src="https://api.iconify.design/fluent/person-12-regular.svg?color=white"><span>About</span>
           </button>
           <button class="flex flex-col items-center gap-1 task-icon" @click="openApp('projects')">
             <img class="w-7 h-7" src="https://api.iconify.design/fluent/apps-24-regular.svg?color=white"><span>Projects</span>
@@ -330,7 +350,7 @@
 
         <div class="mt-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <img src="avatar.jpg" alt="" class="w-12 h-12 rounded-xl object-cover bg-white/10 light:bg-black/[.06]" onerror="this.style.display='none'">
+            <img src="avatar.jpg" alt="" class="w-9 h-9 rounded-xl object-cover bg-white/10 light:bg-black/[.06]" onerror="this.style.display='none'">
             <div>
               <div class="font-medium leading-tight">Oussama Osseili</div>
               <div class="text-xs opacity-70">MIAGE — EMSI Rabat</div>
