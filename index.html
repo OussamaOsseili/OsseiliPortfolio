@@ -15,7 +15,7 @@
   <!-- Alpine.js -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-  <!-- Segoe-ish font -->
+  <!-- Inter font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
@@ -26,26 +26,30 @@
     }
     html { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
 
-    /* Wallpaper: use your wallpaper.jpg */
-    body { background: transparent; }
-    .light body { background: transparent; color: #0b1020; }
-
-    body::before{
-      content:"";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      background: center / cover no-repeat fixed url('wallpaper.jpg');
-      filter: saturate(105%) contrast(105%);
+    /* Interactive wallpaper canvas sits behind everything */
+    #wallpaperCanvas{
+      position: fixed; inset: 0;
+      z-index: -3;            /* far back */
+      pointer-events: none;   /* doesn't block clicks */
     }
-    body::after{
-      content:"";
-      position: fixed;
-      inset: 0;
-      z-index: -1;
+    /* Soft tint vignette on top of canvas for legibility */
+    #wallpaperTint{
+      content:""; position: fixed; inset: 0; z-index: -2;
       pointer-events: none;
-      background: radial-gradient(1200px 800px at 10% -10%, rgba(255,255,255,.06), rgba(0,0,0,.24));
+      background: radial-gradient(1200px 800px at 10% -10%, rgba(255,255,255,.06), rgba(0,0,0,.25));
       mix-blend-mode: soft-light;
+    }
+    /* Optional headline overlay with subtle parallax */
+    #aboutOverlay{
+      position: fixed; inset: 0; z-index: -1;
+      pointer-events: none; display: grid; place-items: center;
+      text-align: center;
+    }
+    .aboutBadge{
+      display:inline-block; margin:.25rem; padding:.35rem .6rem;
+      border-radius: .75rem; font-size:.85rem;
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(6px);
     }
 
     .acrylic { backdrop-filter: blur(18px) saturate(120%); -webkit-backdrop-filter: blur(18px) saturate(120%); }
@@ -70,20 +74,40 @@
 
 <body class="min-h-screen text-gray-100 light:text-gray-900">
 
+  <!-- Interactive Wallpaper (canvas + tint + text overlay) -->
+  <canvas id="wallpaperCanvas"></canvas>
+  <div id="wallpaperTint"></div>
+
+  <!-- About overlay content (moves slightly with mouse) -->
+  <div id="aboutOverlay" class="text-white">
+    <div class="px-6">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold drop-shadow-sm">Oussama Osseili</h1>
+      <p class="mt-2 opacity-90 text-sm sm:text-base">Final-year MIAGE engineering student — EMSI Rabat</p>
+      <div class="mt-3">
+        <span class="aboutBadge">Software</span>
+        <span class="aboutBadge">Data/AI</span>
+        <span class="aboutBadge">Cloud/DevOps</span>
+        <span class="aboutBadge">ERP/BPMN</span>
+        <span class="aboutBadge">Sports Analytics</span>
+      </div>
+      <p class="mt-3 text-xs sm:text-sm opacity-90">
+        <a href="mailto:osseilioussamabusi@gmail.com" class="underline">osseilioussamabusi@gmail.com</a> ·
+        <a href="https://www.linkedin.com/in/oussama-osseili" target="_blank" class="underline">LinkedIn</a> ·
+        <a href="https://github.com/OussamaOsseili" target="_blank" class="underline">GitHub</a>
+      </p>
+    </div>
+  </div>
+
   <!-- Desktop -->
   <main class="relative h-[100svh] overflow-hidden">
 
-    <!-- Vignette for depth -->
-    <div class="pointer-events-none absolute inset-0"
-         style="background: radial-gradient(1000px 800px at 80% 110%, rgba(255,255,255,.08), rgba(0,0,0,0));"></div>
-
     <!-- Desktop icons -->
     <section class="absolute inset-0 p-5 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-6 content-start select-none">
-      <!-- About -->
+      <!-- About (now redundant, opens small note) -->
       <button class="desktop-icon flex flex-col items-center gap-2 transition"
               @dblclick="openApp('about')" title="About">
         <img class="w-12 h-12" alt="" src="https://api.iconify.design/fluent/person-12-regular.svg?color=white">
-        <span class="text-[13px] text-center">About Me</span>
+        <span class="text-[13px] text-center">About</span>
       </button>
 
       <!-- Projects -->
@@ -172,54 +196,13 @@
         <!-- Window content -->
         <div class="p-4 overflow-auto h-[calc(100%-44px)] text-sm leading-relaxed">
 
-          <!-- About -->
+          <!-- About (now just a note) -->
           <div x-show="w.key==='about'">
-            <div class="flex items-center gap-4">
-              <img src="avatar.jpg" alt="Oussama Osseili" class="w-40 h-40 rounded-2xl object-cover" onerror="this.style.display='none'">
-              <div>
-                <h4 class="text-xl font-semibold">Oussama Osseili</h4>
-                <p class="opacity-80">Final-year MIAGE engineering student — EMSI Rabat</p>
-                <p class="opacity-70 text-xs">+212 6 24 74 66 25 • <a class="underline" :href="`mailto:${email}`" x-text="email"></a></p>
-              </div>
-            </div>
-
-            <h5 class="mt-5 font-semibold">Core Skills</h5>
-            <ul class="mt-2 grid sm:grid-cols-2 gap-2">
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Languages:</b> Python, Java, C, C++, SQL, JavaScript</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Frameworks/Technos:</b> Angular, Flask, J2EE, .NET, Spring Boot</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Databases:</b> Oracle, MySQL, SQL Server, SQLite</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Tools:</b> Git, GitHub, Docker, Unix/Linux</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]"><b>Methods:</b> MVC, Agile/Scrum, DevOps</li>
-            </ul>
-
-            <h5 class="mt-5 font-semibold">Languages</h5>
-            <p class="opacity-90">Arabic (Native) • French (Fluent) • English (Fluent) • German (Beginner)</p>
-
-            <h5 class="mt-5 font-semibold">Education</h5>
-            <ul class="mt-2 space-y-2">
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <b>EMSI — Rabat</b> · MIAGE Engineering (2021–2026)
-              </li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <b>Université Ibn Tofail — FSJES Kénitra</b> · Economics (2019–2021)
-              </li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">
-                <b>Groupe Scolaire Les Mimosas du Gharb</b> · Baccalauréat Scientifique (2018–2019)
-              </li>
-            </ul>
-
-            <!-- Certifications boxed like Education -->
-            <h5 class="mt-5 font-semibold">Certifications</h5>
-            <ul class="mt-2 grid sm:grid-cols-2 gap-2">
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">Oracle Database 19c Administration</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">Programming for Everybody (Python)</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">Software Design & Project Management</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">Virtual Networks in Microsoft Azure</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">Java as a Second Language</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">Introduction to Git & GitHub</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">Docker, Kubernetes & OpenShift</li>
-              <li class="p-2 rounded-xl bg-white/5 light:bg-black/[.04]">React Basics</li>
-            </ul>
+            <h4 class="text-lg font-semibold">About is now the wallpaper 🎉</h4>
+            <p class="mt-2 opacity-90">
+              Your background shows your name, title, skills and links as a live animated wallpaper.
+              Use the Start menu → “Wallpaper: Pause/Play” to control it.
+            </p>
           </div>
 
           <!-- Projects -->
@@ -294,7 +277,6 @@
           <!-- Data & AI -->
           <div x-show="w.key==='data'">
             <h4 class="text-lg font-semibold">Data & AI</h4>
-
             <div class="mt-3 grid md:grid-cols-2 gap-3">
               <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
                 <h5 class="font-medium">What I do</h5>
@@ -303,7 +285,7 @@
                   <li>EDA & viz: descriptive stats, correlations, interactive charts (Plotly)</li>
                   <li>ML basics: regression & classification (scikit-learn), cross-val & metrics</li>
                   <li>SQL modelling: star schema, indexing, simple analytical queries</li>
-                  <li>Reproducible notebooks + clear README & environment files</li>
+                  <li>Reproducible notebooks + clear README & env files</li>
                 </ul>
               </div>
 
@@ -313,12 +295,11 @@
                   <b>Python</b> (Pandas, NumPy, scikit-learn) · <b>Jupyter</b> · <b>Plotly</b> ·
                   <b>SQL</b> (SQLite/MySQL) · <b>Git</b> · <b>Docker</b>
                 </p>
-
                 <h5 class="mt-3 font-medium">Mini-deliverables</h5>
                 <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
                   <li><b>eda-retail/</b> — ETL + EDA on public sales data, 5–6 plots, short insights</li>
-                  <li><b>ml-baselines/</b> — clean baseline for classification (logreg, RF) with report</li>
-                  <li><b>sql-analytics/</b> — small star schema + queries (window functions)</li>
+                  <li><b>ml-baselines/</b> — classification baselines (logreg, RF) + report</li>
+                  <li><b>sql-analytics/</b> — small star schema + window queries</li>
                 </ul>
               </div>
             </div>
@@ -327,7 +308,6 @@
           <!-- Cloud & DevOps -->
           <div x-show="w.key==='devops'">
             <h4 class="text-lg font-semibold">Cloud & DevOps</h4>
-
             <div class="mt-3 grid md:grid-cols-2 gap-3">
               <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
                 <h5 class="font-medium">What I set up</h5>
@@ -336,16 +316,14 @@
                   <li>CI/CD: <b>GitHub Actions</b> (lint → test → build → push image → deploy)</li>
                   <li>Envs & secrets: per-branch configs, env files, GH secrets</li>
                   <li>Deploy: static sites (Pages) + simple app deploys (Render/Railway)</li>
-                  <li>Ops basics: logs, healthchecks, rollbacks, minimal monitoring</li>
+                  <li>Ops basics: logs, healthchecks, rollbacks, monitoring</li>
                 </ul>
               </div>
-
               <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
                 <h5 class="font-medium">Stack & files</h5>
                 <p class="mt-2 opacity-90">
                   <b>Docker</b>, <b>Docker Compose</b>, <b>GitHub Actions</b>, Nginx basics, Linux/CLI
                 </p>
-
                 <h5 class="mt-3 font-medium">Mini-deliverables</h5>
                 <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
                   <li><b>.github/workflows/ci.yml</b> — pipeline for lint/test/build</li>
@@ -359,30 +337,27 @@
           <!-- ERP / BPMN -->
           <div x-show="w.key==='erp'">
             <h4 class="text-lg font-semibold">ERP / BPMN</h4>
-
             <div class="mt-3 grid md:grid-cols-2 gap-3">
               <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
                 <h5 class="font-medium">What I model</h5>
                 <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-                  <li>Processes BPMN 2.0: <b>Order-to-Cash</b>, <b>Procure-to-Pay</b>, inventory</li>
+                  <li>BPMN 2.0: <b>Order-to-Cash</b>, <b>Procure-to-Pay</b>, inventory</li>
                   <li>Swimlanes: rôles, événements, règles, exceptions & escalades</li>
                   <li>Contrôles & risques: séparation des tâches, validations</li>
-                  <li>Data model: entités (Clients, Articles, Commandes, Factures) + clés</li>
-                  <li>Traceability: statuts, journaux d’audit, indicateurs simples</li>
+                  <li>Data model: Clients, Articles, Commandes, Factures + clés</li>
+                  <li>Traceability: statuts, journaux d’audit, KPIs simples</li>
                 </ul>
               </div>
-
               <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
                 <h5 class="font-medium">Outils & artefacts</h5>
                 <p class="mt-2 opacity-90">
                   <b>BPMN</b> (Bizagi/Draw.io), <b>UML</b>, <b>SQL</b> (schema & contraintes)
                 </p>
-
                 <h5 class="mt-3 font-medium">Mini-deliverables</h5>
                 <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
                   <li><b>bpmn-order-to-cash/</b> — diagrammes + memo rôles & contrôles</li>
                   <li><b>erp-schema.sql</b> — tables Commande/Ligne/Facture/Règlement</li>
-                  <li><b>readme.md</b> — scénario bout-en-bout + KPIs (délai, taux erreur)</li>
+                  <li><b>readme.md</b> — scénario bout-en-bout + KPIs</li>
                 </ul>
               </div>
             </div>
@@ -391,31 +366,28 @@
           <!-- Sports Analytics -->
           <div x-show="w.key==='sports'">
             <h4 class="text-lg font-semibold">Sports Analytics</h4>
-
             <div class="mt-3 grid md:grid-cols-2 gap-3">
               <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
                 <h5 class="font-medium">Focus</h5>
                 <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-                  <li><b>xG</b> baseline (logistic) + calibration curve</li>
+                  <li><b>xG</b> baseline (logistic) + calibration</li>
                   <li><b>xT</b> grid & team possession heatmaps</li>
-                  <li>Player similarity (PCA + kNN) sur features d’événements</li>
-                  <li>Dashboards simples (Streamlit) pour exploration</li>
-                  <li>Rapports courts: méthodo, résultats, limites</li>
+                  <li>Player similarity (PCA + kNN) on event features</li>
+                  <li>Streamlit dashboards for exploration</li>
+                  <li>Short reports: method, results, limits</li>
                 </ul>
               </div>
-
               <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
                 <h5 class="font-medium">Stack & datasets</h5>
                 <p class="mt-2 opacity-90">
                   <b>Python</b> (Pandas, scikit-learn, <b>mplsoccer</b>) · <b>Streamlit</b><br>
-                  Données publiques: <b>StatsBomb</b> / <b>Metrica</b> (échantillons)
+                  Public data: <b>StatsBomb</b> / <b>Metrica</b> samples
                 </p>
-
                 <h5 class="mt-3 font-medium">Mini-deliverables</h5>
                 <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-                  <li><b>sa-xg/</b> — notebook xG + calibration & métriques</li>
-                  <li><b>sa-xt/</b> — xT grid + cartes d’occupation</li>
-                  <li><b>sa-sim/</b> — similarité joueurs (PCA/kNN) + petit rapport</li>
+                  <li><b>sa-xg/</b> — xG notebook + calibration & metrics</li>
+                  <li><b>sa-xt/</b> — xT grid + occupation maps</li>
+                  <li><b>sa-sim/</b> — player similarity (PCA/kNN) + report</li>
                 </ul>
               </div>
             </div>
@@ -425,7 +397,7 @@
       </section>
     </template>
 
-    <!-- Start menu (compact avatar) -->
+    <!-- Start menu -->
     <div x-show="startOpen" x-transition x-cloak
          class="absolute left-1/2 -translate-x-1/2 bottom-[68px] w-[700px] max-w-[90vw] acrylic"
          :class="theme==='light' ? 'glass-light' : 'glass-dark'"
@@ -439,9 +411,6 @@
 
         <h5 class="mt-4 text-sm opacity-80">Pinned</h5>
         <div class="mt-2 grid grid-cols-6 gap-3 text-[13px]">
-          <button class="flex flex-col items-center gap-1 task-icon" @click="openApp('about')">
-            <img class="w-7 h-7" src="https://api.iconify.design/fluent/person-12-regular.svg?color=white"><span>About</span>
-          </button>
           <button class="flex flex-col items-center gap-1 task-icon" @click="openApp('projects')">
             <img class="w-7 h-7" src="https://api.iconify.design/fluent/apps-24-regular.svg?color=white"><span>Projects</span>
           </button>
@@ -467,8 +436,12 @@
               <div class="text-xs opacity-70">MIAGE — EMSI Rabat</div>
             </div>
           </div>
-          <button class="px-3 py-1.5 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]"
-                  @click="toggleTheme">Toggle theme</button>
+          <div class="flex items-center gap-2">
+            <button class="px-3 py-1.5 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]"
+                    @click="toggleTheme">Toggle theme</button>
+            <button class="px-3 py-1.5 rounded-lg border border-white/10 light:border-black/10 hover:bg-white/10 light:hover:bg-black/[.06]"
+                    @click="toggleWallpaper()" x-text="wallpaperPaused ? 'Wallpaper: Play' : 'Wallpaper: Pause'"></button>
+          </div>
         </div>
       </div>
     </div>
@@ -478,26 +451,17 @@
             :class="theme==='light' ? 'glass-light' : 'glass-dark'">
       <div class="max-w-6xl mx-auto h-full px-3 flex items-center justify-between gap-3">
         <div class="flex-1"></div>
-
-        <!-- Center group -->
         <div class="flex items-center gap-2">
-          <!-- Start button -->
-          <button class="task-icon" @click="startOpen=!startOpen" :aria-pressed="startOpen">
+          <button class="task-icon" @click="startOpen=!startOpen" :aria-pressed="startOpen" title="Start">
             <svg width="22" height="22" viewBox="0 0 48 48"><path fill="currentColor" d="M22 6v16H6V8.7zm20 0v18H24V6zM22 26v16L6 39.3V26zm20 0v16H24V26z"/></svg>
           </button>
-          <!-- Pinned -->
-          <button class="task-icon" title="File Explorer (Projects)" @click="openApp('projects')">
+          <button class="task-icon" title="Projects" @click="openApp('projects')">
             <img class="w-6 h-6" src="https://api.iconify.design/fluent/folder-24-regular.svg?color=white">
-          </button>
-          <button class="task-icon" title="About" @click="openApp('about')">
-            <img class="w-6 h-6" src="https://api.iconify.design/fluent/person-12-regular.svg?color=white">
           </button>
           <button class="task-icon" title="Contact" @click="openApp('contact')">
             <img class="w-6 h-6" src="https://api.iconify.design/fluent/mail-24-regular.svg?color=white">
           </button>
         </div>
-
-        <!-- Tray -->
         <div class="flex-1 flex items-center justify-end gap-3 text-sm">
           <div class="px-3 py-1 rounded-lg bg-white/10 light:bg-black/[.06] border border-white/10 light:border-black/10">
             <span x-text="now"></span>
@@ -506,6 +470,138 @@
       </div>
     </footer>
   </main>
+
+  <script>
+    /* ====== Interactive Wallpaper Engine (canvas text drift) ====== */
+    (function(){
+      const canvas = document.getElementById('wallpaperCanvas');
+      const ctx = canvas.getContext('2d');
+      let W=0,H=0, DPR=window.devicePixelRatio||1;
+      let items = [];
+      let paused = false;
+      let img = new Image();
+      img.src = 'wallpaper.jpg'; // optional; if missing, ignored
+      let imgLoaded = false;
+      img.onload = ()=>{ imgLoaded = true; };
+
+      const lines = [
+        'Oussama Osseili',
+        'MIAGE — EMSI Rabat',
+        'Software • Data/AI • Cloud/DevOps • ERP/BPMN • Sports Analytics',
+        'Email: osseilioussamabusi@gmail.com',
+        'LinkedIn: /in/oussama-osseili',
+        'GitHub: @OussamaOsseili'
+      ];
+
+      function resize(){
+        W = canvas.width  = Math.floor(window.innerWidth * DPR);
+        H = canvas.height = Math.floor(window.innerHeight* DPR);
+        canvas.style.width  = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight+ 'px';
+        // re-seed items for density
+        seed();
+      }
+
+      function rand(a,b){ return a + Math.random()*(b-a); }
+
+      function seed(){
+        items = [];
+        const density = Math.max(18, Math.min(36, Math.floor((W/DPR + H/DPR)/80)));
+        for(let i=0;i<density;i++){
+          const text = lines[i % lines.length];
+          const size = rand(12, 28); // px @1x
+          const speedX = rand(-0.35, 0.35);
+          const speedY = rand(-0.15, 0.15);
+          const alpha  = rand(0.25, 0.55);
+          const hue = 220 + rand(-10, 30); // bluish accent
+          items.push({
+            text, x: rand(0, W), y: rand(0, H),
+            vx: (speedX===0?0.1:speedX)*DPR,
+            vy: (speedY===0?0.05:speedY)*DPR,
+            size: size*DPR, alpha, hue
+          });
+        }
+      }
+
+      function drawBackground(){
+        // faint image if available
+        if(imgLoaded){
+          const iw = img.naturalWidth, ih = img.naturalHeight;
+          const r = Math.max(W/iw, H/ih);
+          const w = iw*r, h = ih*r;
+          const x = (W - w)/2, y = (H - h)/2;
+          ctx.globalAlpha = 0.15;
+          ctx.drawImage(img, x, y, w, h);
+          ctx.globalAlpha = 1;
+        } else {
+          // gradient fallback
+          const g = ctx.createRadialGradient(W*0.1, H*0.1, 0, W*0.1, H*0.1, Math.max(W,H));
+          g.addColorStop(0,'#10182a'); g.addColorStop(1,'#0b1220');
+          ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+        }
+      }
+
+      function step(){
+        if(paused) return;
+        ctx.clearRect(0,0,W,H);
+        drawBackground();
+
+        ctx.textBaseline='middle';
+        items.forEach(it=>{
+          it.x += it.vx; it.y += it.vy;
+
+          // wrap around edges
+          if(it.x < -200*DPR) it.x = W + 200*DPR;
+          if(it.x > W + 200*DPR) it.x = -200*DPR;
+          if(it.y < -50*DPR) it.y = H + 50*DPR;
+          if(it.y > H + 50*DPR) it.y = -50*DPR;
+
+          ctx.font = `${it.size}px Inter, system-ui, sans-serif`;
+          ctx.fillStyle = `hsla(${it.hue}, 90%, 70%, ${it.alpha})`;
+          ctx.fillText(it.text, it.x, it.y);
+
+          // soft glow
+          ctx.shadowColor = `hsla(${it.hue}, 90%, 70%, ${Math.min(0.6, it.alpha+0.15)})`;
+          ctx.shadowBlur = 6*DPR;
+          ctx.fillText(it.text, it.x, it.y);
+          ctx.shadowBlur = 0;
+        });
+      }
+
+      function loop(){
+        if(!prefersReduced) step();
+        requestAnimationFrame(loop);
+      }
+
+      // Parallax for the centered overlay
+      const overlay = document.getElementById('aboutOverlay');
+      let parX=0, parY=0;
+      function onMouseMove(e){
+        const rx = (e.clientX / window.innerWidth  - 0.5);
+        const ry = (e.clientY / window.innerHeight - 0.5);
+        parX = rx * 16; // px
+        parY = ry * 12;
+        overlay.style.transform = `translate3d(${parX}px, ${parY}px, 0)`;
+      }
+
+      // Reduced motion support
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let prefersReduced = mq.matches;
+      mq.onchange = () => { prefersReduced = mq.matches; };
+
+      window.addEventListener('mousemove', onMouseMove, {passive:true});
+      window.addEventListener('resize', resize);
+      resize(); seed(); loop();
+
+      // expose controls
+      window.__wallpaper = {
+        pause(){ paused = true; },
+        play(){ paused = false; },
+        toggle(){ paused = !paused; },
+        isPaused(){ return paused; }
+      };
+    })();
+  </script>
 
   <script>
     function win11(){
@@ -517,16 +613,17 @@
         z: 10,
         email: 'osseilioussamabusi@gmail.com',
         linkedin: 'https://www.linkedin.com/in/oussama-osseili',
+        wallpaperPaused: false,
 
         // windows registry
         windows: [
-          { id:1, key:'about',    title:'About — Oussama Osseili', x:120, y:100, w:680, h:500, z:1, open:true,  minimized:false, max:false, prev:null },
-          { id:2, key:'projects', title:'Projects',                 x:220, y:160, w:820, h:520, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:3, key:'contact',  title:'Contact',                  x:260, y:200, w:640, h:300, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:4, key:'data',     title:'Data & AI',                x:300, y:180, w:580, h:320, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:5, key:'devops',   title:'Cloud & DevOps',           x:340, y:220, w:580, h:320, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:6, key:'erp',      title:'ERP / BPMN',               x:380, y:240, w:580, h:320, z:1, open:false, minimized:false, max:false, prev:null },
-          { id:7, key:'sports',   title:'Sports Analytics',         x:420, y:200, w:580, h:340, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:1, key:'about',    title:'About (Wallpaper)', x:120, y:100, w:520, h:220, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:2, key:'projects', title:'Projects',          x:220, y:160, w:820, h:520, z:1, open:true, minimized:false, max:false, prev:null },
+          { id:3, key:'contact',  title:'Contact',           x:260, y:200, w:640, h:300, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:4, key:'data',     title:'Data & AI',         x:300, y:180, w:580, h:320, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:5, key:'devops',   title:'Cloud & DevOps',    x:340, y:220, w:580, h:320, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:6, key:'erp',      title:'ERP / BPMN',        x:380, y:240, w:580, h:320, z:1, open:false, minimized:false, max:false, prev:null },
+          { id:7, key:'sports',   title:'Sports Analytics',  x:420, y:200, w:580, h:340, z:1, open:false, minimized:false, max:false, prev:null },
         ],
 
         // your real projects
@@ -583,6 +680,12 @@
           localStorage.setItem('theme', this.theme);
           document.documentElement.classList.toggle('light', this.theme==='light');
         },
+        toggleWallpaper(){
+          if(window.__wallpaper){
+            window.__wallpaper.toggle();
+            this.wallpaperPaused = window.__wallpaper.isPaused();
+          }
+        },
         openLink(url){ window.open(url, '_blank'); },
 
         // window actions
@@ -605,7 +708,7 @@
         },
         focus(id){ const w=this.windows.find(x=>x.id===id); if(!w) return; this.z+=1; w.z=this.z; },
 
-        // dragging (fixed)
+        // dragging
         dragState:null,
         startDrag(e,id){
           const w=this.windows.find(x=>x.id===id); if(!w || w.max) return;
