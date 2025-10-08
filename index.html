@@ -30,16 +30,14 @@
     body { background: transparent; }
     .light body { background: transparent; color: #0b1020; }
 
-    /* Wallpaper layer */
     body::before{
       content:"";
       position: fixed;
       inset: 0;
-      z-index: -2; /* behind everything */
+      z-index: -2;
       background: center / cover no-repeat fixed url('wallpaper.jpg');
       filter: saturate(105%) contrast(105%);
     }
-    /* Subtle mica-like tint so glass reads well on busy images */
     body::after{
       content:"";
       position: fixed;
@@ -157,7 +155,7 @@
                :style="{left:w.x+'px', top:w.y+'px', width:w.w+'px', height:w.h+'px', zIndex:w.z}"
                @mousedown="focus(w.id)">
 
-        <!-- Titlebar (small avatar; About photo is bigger in content) -->
+        <!-- Titlebar -->
         <div class="w11-title px-3 py-2 flex items-center justify-between bg-white/5 light:bg-black/[.04]"
              @mousedown.prevent="startDrag($event, w.id)">
           <div class="flex items-center gap-3">
@@ -173,10 +171,10 @@
 
         <!-- Window content -->
         <div class="p-4 overflow-auto h-[calc(100%-44px)] text-sm leading-relaxed">
+
           <!-- About -->
           <div x-show="w.key==='about'">
             <div class="flex items-center gap-4">
-              <!-- Bigger portrait only here -->
               <img src="avatar.jpg" alt="Oussama Osseili" class="w-40 h-40 rounded-2xl object-cover" onerror="this.style.display='none'">
               <div>
                 <h4 class="text-xl font-semibold">Oussama Osseili</h4>
@@ -293,136 +291,141 @@
             <p class="mt-2 opacity-80 text-sm">Phone: +212 6 24 74 66 25</p>
           </div>
 
-          <!-- Sections -->
           <!-- Data & AI -->
-<div x-show="w.key==='data'">
-  <h4 class="text-lg font-semibold">Data & AI</h4>
+          <div x-show="w.key==='data'">
+            <h4 class="text-lg font-semibold">Data & AI</h4>
 
-  <div class="mt-3 grid md:grid-cols-2 gap-3">
-    <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-      <h5 class="font-medium">What I do</h5>
-      <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-        <li>ETL: ingestion → cleaning → feature engineering (Pandas/NumPy)</li>
-        <li>EDA & viz: descriptive stats, correlations, interactive charts (Plotly)</li>
-        <li>ML basics: regression & classification (scikit-learn), cross-val & metrics</li>
-        <li>SQL modelling: star schema, indexing, simple analytical queries</li>
-        <li>Reproducible notebooks + clear README & environment files</li>
-      </ul>
-    </div>
+            <div class="mt-3 grid md:grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <h5 class="font-medium">What I do</h5>
+                <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+                  <li>ETL: ingestion → cleaning → feature engineering (Pandas/NumPy)</li>
+                  <li>EDA & viz: descriptive stats, correlations, interactive charts (Plotly)</li>
+                  <li>ML basics: regression & classification (scikit-learn), cross-val & metrics</li>
+                  <li>SQL modelling: star schema, indexing, simple analytical queries</li>
+                  <li>Reproducible notebooks + clear README & environment files</li>
+                </ul>
+              </div>
 
-    <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-      <h5 class="font-medium">Stack & tools</h5>
-      <p class="mt-2 opacity-90">
-        <b>Python</b> (Pandas, NumPy, scikit-learn) · <b>Jupyter</b> · <b>Plotly</b> ·
-        <b>SQL</b> (SQLite/MySQL) · <b>Git</b> · <b>Docker</b>
-      </p>
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <h5 class="font-medium">Stack & tools</h5>
+                <p class="mt-2 opacity-90">
+                  <b>Python</b> (Pandas, NumPy, scikit-learn) · <b>Jupyter</b> · <b>Plotly</b> ·
+                  <b>SQL</b> (SQLite/MySQL) · <b>Git</b> · <b>Docker</b>
+                </p>
 
-      <h5 class="mt-3 font-medium">Mini-deliverables</h5>
-      <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-        <li><b>eda-retail/</b> — ETL + EDA on public sales data, 5–6 plots, short insights</li>
-        <li><b>ml-baselines/</b> — clean baseline for classification (logreg, RF) with report</li>
-        <li><b>sql-analytics/</b> — small star schema + queries (window functions)</li>
-      </ul>
-    </div>
-  </div>
-</div>
-<!-- Cloud & DevOps -->
-<div x-show="w.key==='devops'">
-  <h4 class="text-lg font-semibold">Cloud & DevOps</h4>
+                <h5 class="mt-3 font-medium">Mini-deliverables</h5>
+                <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+                  <li><b>eda-retail/</b> — ETL + EDA on public sales data, 5–6 plots, short insights</li>
+                  <li><b>ml-baselines/</b> — clean baseline for classification (logreg, RF) with report</li>
+                  <li><b>sql-analytics/</b> — small star schema + queries (window functions)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
-  <div class="mt-3 grid md:grid-cols-2 gap-3">
-    <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-      <h5 class="font-medium">What I set up</h5>
-      <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-        <li>Containers: <b>Docker</b> & Compose for local/dev parity</li>
-        <li>CI/CD: <b>GitHub Actions</b> (lint → test → build → push image → deploy)</li>
-        <li>Envs & secrets: per-branch configs, env files, GH secrets</li>
-        <li>Deploy: static sites (Pages) + simple app deploys (Render/Railway)</li>
-        <li>Ops basics: logs, healthchecks, rollbacks, minimal monitoring</li>
-      </ul>
-    </div>
+          <!-- Cloud & DevOps -->
+          <div x-show="w.key==='devops'">
+            <h4 class="text-lg font-semibold">Cloud & DevOps</h4>
 
-    <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-      <h5 class="font-medium">Stack & files</h5>
-      <p class="mt-2 opacity-90">
-        <b>Docker</b>, <b>Docker Compose</b>, <b>GitHub Actions</b>, Nginx basics, Linux/CLI
-      </p>
+            <div class="mt-3 grid md:grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <h5 class="font-medium">What I set up</h5>
+                <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+                  <li>Containers: <b>Docker</b> & Compose for local/dev parity</li>
+                  <li>CI/CD: <b>GitHub Actions</b> (lint → test → build → push image → deploy)</li>
+                  <li>Envs & secrets: per-branch configs, env files, GH secrets</li>
+                  <li>Deploy: static sites (Pages) + simple app deploys (Render/Railway)</li>
+                  <li>Ops basics: logs, healthchecks, rollbacks, minimal monitoring</li>
+                </ul>
+              </div>
 
-      <h5 class="mt-3 font-medium">Mini-deliverables</h5>
-      <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-        <li><b>.github/workflows/ci.yml</b> — pipeline for lint/test/build</li>
-        <li><b>Dockerfile</b> + <b>docker-compose.yml</b> — multi-service dev stack</li>
-        <li><b>deploy-notes.md</b> — playbook: run, roll back, rotate secrets</li>
-      </ul>
-    </div>
-  </div>
-</div>
-<!-- ERP / BPMN -->
-<div x-show="w.key==='erp'">
-  <h4 class="text-lg font-semibold">ERP / BPMN</h4>
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <h5 class="font-medium">Stack & files</h5>
+                <p class="mt-2 opacity-90">
+                  <b>Docker</b>, <b>Docker Compose</b>, <b>GitHub Actions</b>, Nginx basics, Linux/CLI
+                </p>
 
-  <div class="mt-3 grid md:grid-cols-2 gap-3">
-    <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-      <h5 class="font-medium">What I model</h5>
-      <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-        <li>Processes BPMN 2.0: <b>Order-to-Cash</b>, <b>Procure-to-Pay</b>, inventory</li>
-        <li>Swimlanes: rôles, événements, règles, exceptions & escalades</li>
-        <li>Contrôles & risques: séparation des tâches, validations</li>
-        <li>Data model: entités (Clients, Articles, Commandes, Factures) + clés</li>
-        <li>Traceability: statuts, journaux d’audit, indicateurs simples</li>
-      </ul>
-    </div>
+                <h5 class="mt-3 font-medium">Mini-deliverables</h5>
+                <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+                  <li><b>.github/workflows/ci.yml</b> — pipeline for lint/test/build</li>
+                  <li><b>Dockerfile</b> + <b>docker-compose.yml</b> — multi-service dev stack</li>
+                  <li><b>deploy-notes.md</b> — playbook: run, roll back, rotate secrets</li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
-    <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-      <h5 class="font-medium">Outils & artefacts</h5>
-      <p class="mt-2 opacity-90">
-        <b>BPMN</b> (Bizagi/Draw.io), <b>UML</b>, <b>SQL</b> (schema & contraintes)
-      </p>
+          <!-- ERP / BPMN -->
+          <div x-show="w.key==='erp'">
+            <h4 class="text-lg font-semibold">ERP / BPMN</h4>
 
-      <h5 class="mt-3 font-medium">Mini-deliverables</h5>
-      <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-        <li><b>bpmn-order-to-cash/</b> — diagrammes + memo rôles & contrôles</li>
-        <li><b>erp-schema.sql</b> — tables Commande/Ligne/Facture/Règlement</li>
-        <li><b>readme.md</b> — scénario bout-en-bout + KPIs (délai, taux erreur)</li>
-      </ul>
-    </div>
-  </div>
-</div>
-<!-- Sports Analytics -->
-<div x-show="w.key==='sports'">
-  <h4 class="text-lg font-semibold">Sports Analytics</h4>
+            <div class="mt-3 grid md:grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <h5 class="font-medium">What I model</h5>
+                <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+                  <li>Processes BPMN 2.0: <b>Order-to-Cash</b>, <b>Procure-to-Pay</b>, inventory</li>
+                  <li>Swimlanes: rôles, événements, règles, exceptions & escalades</li>
+                  <li>Contrôles & risques: séparation des tâches, validations</li>
+                  <li>Data model: entités (Clients, Articles, Commandes, Factures) + clés</li>
+                  <li>Traceability: statuts, journaux d’audit, indicateurs simples</li>
+                </ul>
+              </div>
 
-  <div class="mt-3 grid md:grid-cols-2 gap-3">
-    <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-      <h5 class="font-medium">Focus</h5>
-      <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-        <li><b>xG</b> baseline (logistic) + calibration curve</li>
-        <li><b>xT</b> grid & team possession heatmaps</li>
-        <li>Player similarity (PCA + kNN) sur features d’événements</li>
-        <li>Dashboards simples (Streamlit) pour exploration</li>
-        <li>Rapports courts: méthodo, résultats, limites</li>
-      </ul>
-    </div>
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <h5 class="font-medium">Outils & artefacts</h5>
+                <p class="mt-2 opacity-90">
+                  <b>BPMN</b> (Bizagi/Draw.io), <b>UML</b>, <b>SQL</b> (schema & contraintes)
+                </p>
 
-    <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
-      <h5 class="font-medium">Stack & datasets</h5>
-      <p class="mt-2 opacity-90">
-        <b>Python</b> (Pandas, scikit-learn, <b>mplsoccer</b>) · <b>Streamlit</b><br>
-        Données publiques: <b>StatsBomb</b> / <b>Metrica</b> (échantillons)
-      </p>
+                <h5 class="mt-3 font-medium">Mini-deliverables</h5>
+                <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+                  <li><b>bpmn-order-to-cash/</b> — diagrammes + memo rôles & contrôles</li>
+                  <li><b>erp-schema.sql</b> — tables Commande/Ligne/Facture/Règlement</li>
+                  <li><b>readme.md</b> — scénario bout-en-bout + KPIs (délai, taux erreur)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
-      <h5 class="mt-3 font-medium">Mini-deliverables</h5>
-      <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
-        <li><b>sa-xg/</b> — notebook xG + calibration & métriques</li>
-        <li><b>sa-xt/</b> — xT grid + cartes d’occupation</li>
-        <li><b>sa-sim/</b> — similarité joueurs (PCA/kNN) + petit rapport</li>
-      </ul>
-    </div>
-  </div>
-</div>
+          <!-- Sports Analytics -->
+          <div x-show="w.key==='sports'">
+            <h4 class="text-lg font-semibold">Sports Analytics</h4>
 
+            <div class="mt-3 grid md:grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <h5 class="font-medium">Focus</h5>
+                <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+                  <li><b>xG</b> baseline (logistic) + calibration curve</li>
+                  <li><b>xT</b> grid & team possession heatmaps</li>
+                  <li>Player similarity (PCA + kNN) sur features d’événements</li>
+                  <li>Dashboards simples (Streamlit) pour exploration</li>
+                  <li>Rapports courts: méthodo, résultats, limites</li>
+                </ul>
+              </div>
 
-    <!-- Start menu (kept compact avatar) -->
+              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04]">
+                <h5 class="font-medium">Stack & datasets</h5>
+                <p class="mt-2 opacity-90">
+                  <b>Python</b> (Pandas, scikit-learn, <b>mplsoccer</b>) · <b>Streamlit</b><br>
+                  Données publiques: <b>StatsBomb</b> / <b>Metrica</b> (échantillons)
+                </p>
+
+                <h5 class="mt-3 font-medium">Mini-deliverables</h5>
+                <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+                  <li><b>sa-xg/</b> — notebook xG + calibration & métriques</li>
+                  <li><b>sa-xt/</b> — xT grid + cartes d’occupation</li>
+                  <li><b>sa-sim/</b> — similarité joueurs (PCA/kNN) + petit rapport</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </template>
+
+    <!-- Start menu (compact avatar) -->
     <div x-show="startOpen" x-transition x-cloak
          class="absolute left-1/2 -translate-x-1/2 bottom-[68px] w-[700px] max-w-[90vw] acrylic"
          :class="theme==='light' ? 'glass-light' : 'glass-dark'"
@@ -526,7 +529,7 @@
           { id:7, key:'sports',   title:'Sports Analytics',         x:420, y:200, w:580, h:340, z:1, open:false, minimized:false, max:false, prev:null },
         ],
 
-        // your real projects (demo ones removed)
+        // your real projects
         projects: [
           {
             title:'Plateforme maintenance HTB — ONEE (Stage 4ᵉ année)',
