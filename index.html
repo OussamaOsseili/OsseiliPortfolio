@@ -156,7 +156,7 @@
           <div x-show="w.key==='about'">
             <div class="flex items-center gap-4">
               <!-- Bigger portrait -->
-              <img src="avatar.jpg" alt="Oussama Osseili" class="w-28 h-28 rounded-2xl object-cover" onerror="this.style.display='none'">
+             <img src="avatar.jpg" alt="Oussama Osseili" class="w-28 h-28 rounded-2xl object-cover" onerror="this.style.display='none'">
               <div>
                 <h4 class="text-xl font-semibold">Oussama Osseili</h4>
                 <p class="opacity-80">Final-year MIAGE engineering student — EMSI Rabat</p>
@@ -220,22 +220,41 @@
               </template>
             </div>
 
-            <!-- Experience (adds this year's internship too) -->
-            <h5 class="mt-5 font-semibold">Experience</h5>
-            <div class="mt-2 grid md:grid-cols-2 gap-3">
-              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
-                <b>Stage PFE — Software Engineer Intern</b> <span class="opacity-70">• 2025 — présent</span>
-                <p class="opacity-90 mt-1">
-                  Projet de fin d’études (PFE) en cours : implémentation d’une application métier avec bonnes pratiques (CI/CD, tests, sécurité).
-                </p>
-                <p class="opacity-70 text-xs mt-1">Tech suggérées : Spring Boot / React · Docker · GitHub Actions</p>
-              </div>
-              <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
-                <b>Python Full-Stack Developer (Django/Flask) — PROWED Media SARL</b> <span class="opacity-70">• 4 semaines</span>
-                <p class="opacity-90 mt-1">Développement & amélioration de plateformes internes ; supervision temps réel et centralisation des données pour améliorer ventes & opérations.</p>
-              </div>
-            </div>
-          </div>
+            <!-- Experience -->
+<h5 class="mt-5 font-semibold">Experience</h5>
+<div class="mt-2 grid md:grid-cols-2 gap-3">
+  <!-- ONEE -->
+  <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
+    <b>Project Intern — Office National de l’Électricité et de l’Eau Potable (ONEE), Branche Électricité</b>
+    <span class="opacity-70"> • juil. 2025 – sept. 2025 · 3 mois · Maroc · Sur site</span>
+    <p class="opacity-90 mt-2">
+      Plateforme web de <b>maintenance des postes HTB</b> pour remplacer le suivi Excel.
+    </p>
+    <ul class="mt-2 list-disc ml-5 space-y-1 opacity-90">
+      <li>RBAC (authentification, rôles : Admin, Chef Maintenance, Chef Contrôle…)</li>
+      <li>Gestion équipements (CRUD, catégories, états Vert/Jaune/Rouge, historique)</li>
+      <li>Planification (calendrier, ordres de travail, priorités)</li>
+      <li>Import Excel (.xlsx) via <b>Apache POI</b>, validation & logs</li>
+      <li>Reporting PDF, dashboards, <b>schéma unifilaire</b> interactif</li>
+    </ul>
+    <p class="opacity-80 text-xs mt-2">
+      Stack : <b>Spring Boot 3.5.4 (Java 17, JPA, SQLite, REST)</b> · <b>React (Vite)</b>, Tailwind, Axios, React Router
+    </p>
+  </div>
+
+  <!-- PROWED -->
+  <div class="p-3 rounded-xl bg-white/5 light:bg-black/[.04] border border-white/10 light:border-black/10">
+    <b>Python Full-Stack Developer (Django/Flask) — PROWED Media SARL</b>
+    <span class="opacity-70"> • 4 semaines</span>
+    <p class="opacity-90 mt-2">
+      Développement et amélioration de plateformes internes ; supervision temps réel et centralisation des données pour optimiser ventes & opérations.
+    </p>
+    <p class="opacity-80 text-xs mt-2">
+      Stack : <b>Django / Flask</b>, Python, JS, Git, Docker
+    </p>
+  </div>
+</div>
+
 
           <!-- Contact -->
           <div x-show="w.key==='contact'">
