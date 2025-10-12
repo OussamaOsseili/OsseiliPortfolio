@@ -1,15 +1,25 @@
 /** @type {import('next').NextConfig} */
+
+// IMPORTANT for GitHub Pages repo: oussamaosseili.github.io/OussamaOsseili
+const BASE_PATH = '/OussamaOsseili';
+
 const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
 
-  // IMPORTANT for GitHub Pages when repo is not username.github.io
-  basePath: '/OussamaOsseili',
-  assetPrefix: '/OussamaOsseili/',
+  // GitHub Pages subpath:
+  basePath: BASE_PATH,
+  assetPrefix: `${BASE_PATH}/`,
   trailingSlash: true,
 
+  // Expose basePath in the browser for raw <img>/<a> or content-driven paths:
+  env: {
+    NEXT_PUBLIC_BASE_PATH: BASE_PATH,
+  },
+
+  // Keep your previous relax settings
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-}
+};
 
-export default nextConfig
+export default nextConfig;
