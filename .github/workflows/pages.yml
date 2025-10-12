@@ -18,45 +18,37 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 9.12.0
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
 
-      - name: Cache pnpm store
-        uses: actions/cache@v4
-        with:
-          path: ~/.pnpm-store
-          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-store-${{ runner.os }}-
-
       - name: Install dependencies (no frozen lockfile)
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build (Next.js static export)
+      - name: Build Next.js static site
         run: pnpm run build
 
-      - name: Ensure out exists
+      - name: Ensure build output exists
         run: |
           if [ ! -d "out" ]; then
-            echo "::error::Expected 'out' directory after build. Make sure next.config.mjs has output: 'export'."
+            echo "::error::Missing 'out' directory after build. Check next.config.mjs for output: 'export'."
             exit 1
           fi
 
-      - name: Add .nojekyll
+      - name: Add .nojekyll file
         run: touch out/.nojekyll
 
-      - name: Upload artifact
+      - name: Upload artifact for deployment
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
