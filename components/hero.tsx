@@ -5,6 +5,7 @@ import { useLanguage } from "@/lib/language-context"
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
 import content from "@/content.json"
+import { withBasePath } from "@/lib/withBasePath" // ✅ add this
 
 export function Hero() {
   const { language } = useLanguage()
@@ -31,7 +32,8 @@ export function Hero() {
             size="lg"
             className="gap-2 hover:scale-105 transition-transform bg-transparent"
           >
-            <a href="/cv-oussama-osseili.pdf" download>
+            {/* ✅ Ensure CV link works under basePath on GitHub Pages */}
+            <a href={withBasePath("/cv-oussama-osseili.pdf")} download>
               <Download className="h-4 w-4" />
               {t.hero.cta2}
             </a>
