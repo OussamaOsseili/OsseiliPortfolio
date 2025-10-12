@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Download, Award, Briefcase, GraduationCap, Languages } from "lucide-react"
 import Image from "next/image"
 import content from "@/content.json"
-import { withBasePath } from "@/lib/withBasePath" // ✅ add this
+import { withBasePath } from "@/lib/withBasePath" // ✅
 
 export function About() {
   const { language } = useLanguage()
@@ -18,14 +18,11 @@ export function About() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active")
-          }
+          if (entry.isIntersecting) entry.target.classList.add("active")
         })
       },
       { threshold: 0.1 },
     )
-
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el))
     return () => observer.disconnect()
   }, [])
@@ -41,13 +38,19 @@ export function About() {
         <div className="max-w-4xl mx-auto mb-16 reveal">
           <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
             <div className="relative w-48 h-48 rounded-2xl overflow-hidden shadow-xl ring-4 ring-primary/20 hover:ring-primary/40 transition-all duration-300 hover:scale-105">
-              {/* Leading slash works with Next basePath */}
-              <Image src="/avatar.jpg" alt="Oussama Osseili" fill className="object-cover shadow-none" priority />
+              {/* ✅ Use base-path-aware URL so it works on GitHub Pages */}
+              <Image
+                src={withBasePath("/avatar.jpg")}
+                alt="Oussama Osseili"
+                fill
+                className="object-cover shadow-none"
+                priority
+              />
             </div>
             <div className="flex-1 text-center md:text-left">
               <p className="text-lg leading-relaxed mb-6">{t.about.bio}</p>
               <Button asChild size="lg" className="gap-2">
-                {/* ✅ Use withBasePath for raw <a> so it works under /OussamaOsseili */}
+                {/* ✅ Also fix CV link for subpath */}
                 <a href={withBasePath("/cv-oussama-osseili.pdf")} download>
                   <Download className="h-4 w-4" />
                   {t.about.downloadCV}
