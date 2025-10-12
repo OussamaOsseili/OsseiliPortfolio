@@ -5,7 +5,7 @@ import { useLanguage } from "@/lib/language-context"
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
 import content from "@/content.json"
-import { withBasePath } from "@/lib/withBasePath" // ✅ add this
+import { withBasePath } from "@/lib/withBasePath" // ✅
 
 export function Hero() {
   const { language } = useLanguage()
@@ -32,7 +32,7 @@ export function Hero() {
             size="lg"
             className="gap-2 hover:scale-105 transition-transform bg-transparent"
           >
-            {/* ✅ Ensure CV link works under basePath on GitHub Pages */}
+            {/* ✅ CV link fixed for subpath */}
             <a href={withBasePath("/cv-oussama-osseili.pdf")} download>
               <Download className="h-4 w-4" />
               {t.hero.cta2}
@@ -58,28 +58,20 @@ function Counter({ value, label }: { value: number; label: string }) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !started) {
-          setStarted(true)
-        }
+        if (entries[0].isIntersecting && !started) setStarted(true)
       },
       { threshold: 0.5 },
     )
-
-    if (counterRef.current) {
-      observer.observe(counterRef.current)
-    }
-
+    if (counterRef.current) observer.observe(counterRef.current)
     return () => observer.disconnect()
   }, [started])
 
   useEffect(() => {
     if (!started) return
-
     const duration = 2000
     const steps = 60
     const increment = value / steps
     let current = 0
-
     const timer = setInterval(() => {
       current += increment
       if (current >= value) {
@@ -89,7 +81,6 @@ function Counter({ value, label }: { value: number; label: string }) {
         setCount(Math.floor(current))
       }
     }, duration / steps)
-
     return () => clearInterval(timer)
   }, [value, started])
 
