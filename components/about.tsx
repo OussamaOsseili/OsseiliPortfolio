@@ -126,7 +126,6 @@ export function About() {
                 { name: "Git and GitHub", url: "https://www.coursera.org/account/accomplishments/certificate/53XES4ALEK35" },
                 { name: "Docker, Kubernetes & OpenShift", url: "https://www.coursera.org/account/accomplishments/certificate/V2KR7IAG4SDM" },
                 { name: "Software Design and Project Management", url: "https://www.coursera.org/account/accomplishments/certificate/NLB82FUGC9W6" },
-                { name: "Oracle Database 19c Admin Professional Credential", url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=2A0E515E54E9777056DE4581F0407FC5CC7EED24C6A824570ECF615EC9D3ACE3#" },
                 { name: "Virtual Networks in Azure", url: "https://www.coursera.org/account/accomplishments/certificate/8V7FA5NDRST5" },
                 { name: "Java as a Second Language", url: "https://www.coursera.org/account/accomplishments/certificate/JD9C0ZZ5QJ2O" },
               ].map((cert, index) => (
@@ -202,4 +201,5 @@ export function About() {
     </section>
   )
 }
+
 
