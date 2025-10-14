@@ -5,12 +5,10 @@ const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
 
-  // Keep only basePath for GitHub Pages
   basePath: BASE_PATH,
-  // ❌ assetPrefix removed — it was causing CSS/JS to 404
+  // keep assetPrefix removed to avoid CSS/JS 404s on Pages
   trailingSlash: true,
 
-  // For raw <a>/<img> usage
   env: { NEXT_PUBLIC_BASE_PATH: BASE_PATH },
 
   eslint: { ignoreDuringBuilds: true },
