@@ -120,9 +120,10 @@ export function About() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
               {[
+                { name: "Oracle Database 19c Admin Professional Credential", url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=2A0E515E54E9777056DE4581F0407FC5CC7EED24C6A824570ECF615EC9D3ACE3#" },
                 { name: "React Native", url: "https://www.coursera.org/account/accomplishments/certificate/3DJ3Z7SMG256" },
-                { name: "Introduction to Java and Object-Oriented Programming", url: "https://www.coursera.org/account/accomplishments/certificate/JD9C0ZZ5QJ2O" },
-                { name: "Introduction to Git and GitHub", url: "https://www.coursera.org/account/accomplishments/certificate/53XES4ALEK35" },
+                { name: "Java and Object-Oriented Programming", url: "https://www.coursera.org/account/accomplishments/certificate/JD9C0ZZ5QJ2O" },
+                { name: "Git and GitHub", url: "https://www.coursera.org/account/accomplishments/certificate/53XES4ALEK35" },
                 { name: "Docker, Kubernetes & OpenShift", url: "https://www.coursera.org/account/accomplishments/certificate/V2KR7IAG4SDM" },
                 { name: "Software Design and Project Management", url: "https://www.coursera.org/account/accomplishments/certificate/NLB82FUGC9W6" },
                 { name: "Oracle Database 19c Admin Professional Credential", url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=2A0E515E54E9777056DE4581F0407FC5CC7EED24C6A824570ECF615EC9D3ACE3#" },
@@ -201,3 +202,4 @@ export function About() {
     </section>
   )
 }
+
