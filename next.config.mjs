@@ -5,15 +5,14 @@ const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
 
-  // Required for GitHub Pages under a repo subpath
+  // Keep only basePath for GitHub Pages
   basePath: BASE_PATH,
-  assetPrefix: `${BASE_PATH}/`,
+  // ❌ assetPrefix removed — it was causing CSS/JS to 404
   trailingSlash: true,
 
-  // Expose basePath to the browser (for raw <a>/<img> or content-driven paths)
+  // For raw <a>/<img> usage
   env: { NEXT_PUBLIC_BASE_PATH: BASE_PATH },
 
-  // Keep relaxed checks for CI
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 };
