@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup PNPM
@@ -26,7 +26,7 @@ jobs:
         with:
           version: 9.12.0
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -35,20 +35,20 @@ jobs:
       - name: Install dependencies (no frozen lockfile)
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build Next.js static site
+      - name: Build (Next.js static export)
         run: pnpm run build
 
-      - name: Ensure build output exists
+      - name: Ensure out exists
         run: |
           if [ ! -d "out" ]; then
-            echo "::error::Missing 'out' directory after build. Check next.config.mjs for output: 'export'."
+            echo "::error::Missing 'out' folder after build. Check next.config.mjs (output: 'export')."
             exit 1
           fi
 
-      - name: Add .nojekyll file
+      - name: Add .nojekyll  # ✅ make sure Pages serves `_next`
         run: touch out/.nojekyll
 
-      - name: Upload artifact for deployment
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
