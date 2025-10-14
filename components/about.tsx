@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Download, Award, Briefcase, GraduationCap, Languages } from "lucide-react"
 import Image from "next/image"
 import content from "@/content.json"
-import { withBasePath } from "@/lib/withBasePath"
+import { withBasePath } from "@/lib/withBasePath" // ✅
 
 export function About() {
   const { language } = useLanguage()
@@ -38,6 +38,7 @@ export function About() {
         <div className="max-w-4xl mx-auto mb-16 reveal">
           <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
             <div className="relative w-48 h-48 rounded-2xl overflow-hidden shadow-xl ring-4 ring-primary/20 hover:ring-primary/40 transition-all duration-300 hover:scale-105">
+              {/* ✅ Use base-path-aware URL so it works on GitHub Pages */}
               <Image
                 src={withBasePath("/avatar.jpg")}
                 alt="Oussama Osseili"
@@ -49,6 +50,7 @@ export function About() {
             <div className="flex-1 text-center md:text-left">
               <p className="text-lg leading-relaxed mb-6">{t.about.bio}</p>
               <Button asChild size="lg" className="gap-2">
+                {/* ✅ Also fix CV link for subpath */}
                 <a href={withBasePath("/cv-oussama-osseili.pdf")} download>
                   <Download className="h-4 w-4" />
                   {t.about.downloadCV}
@@ -104,7 +106,6 @@ export function About() {
           </Card>
         </div>
 
-        {/* === Certifications Section (Updated with Links) === */}
         <Card className="reveal mb-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 shadow-xl">
           <CardHeader>
             <div className="flex items-center gap-2 mb-2">
@@ -116,109 +117,15 @@ export function About() {
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
-              <a
-                href="https://www.coursera.org/account/accomplishments/certificate/3DJ3Z7SMG256"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">React Native</p>
-                  <p className="text-xs text-muted-foreground">Coursera</p>
+              {t.about.certifications.items.map((cert, index) => (
+                <div key={index} className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium">{cert.name}</p>
+                    <p className="text-xs text-muted-foreground">{cert.issuer}</p>
+                  </div>
                 </div>
-              </a>
-
-              <a
-                href="https://www.coursera.org/account/accomplishments/certificate/JD9C0ZZ5QJ2O"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">Introduction to Java and Object-Oriented Programming</p>
-                  <p className="text-xs text-muted-foreground">Coursera</p>
-                </div>
-              </a>
-
-              <a
-                href="https://www.coursera.org/account/accomplishments/certificate/53XES4ALEK35"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">Introduction to Git and GitHub</p>
-                  <p className="text-xs text-muted-foreground">Coursera</p>
-                </div>
-              </a>
-
-              <a
-                href="https://www.coursera.org/account/accomplishments/certificate/V2KR7IAG4SDM"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">Docker, Kubernetes & OpenShift</p>
-                  <p className="text-xs text-muted-foreground">Coursera</p>
-                </div>
-              </a>
-
-              <a
-                href="https://www.coursera.org/account/accomplishments/certificate/NLB82FUGC9W6"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">Software Design and Project Management</p>
-                  <p className="text-xs text-muted-foreground">Coursera</p>
-                </div>
-              </a>
-
-              <a
-                href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=2A0E515E54E9777056DE4581F0407FC5CC7EED24C6A824570ECF615EC9D3ACE3#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">Oracle Database 19c Admin Professional Credential</p>
-                  <p className="text-xs text-muted-foreground">Oracle</p>
-                </div>
-              </a>
-
-              <a
-                href="https://www.coursera.org/account/accomplishments/certificate/8V7FA5NDRST5"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">Virtual Networks in Azure</p>
-                  <p className="text-xs text-muted-foreground">Coursera</p>
-                </div>
-              </a>
-
-              <a
-                href="https://www.coursera.org/account/accomplishments/certificate/JD9C0ZZ5QJ2O"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">Java as a Second Language</p>
-                  <p className="text-xs text-muted-foreground">Coursera</p>
-                </div>
-              </a>
+              ))}
             </div>
           </CardContent>
         </Card>
