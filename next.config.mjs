@@ -6,7 +6,6 @@ const nextConfig = {
   images: { unoptimized: true },
 
   basePath: BASE_PATH,
-  // keep assetPrefix removed to avoid CSS/JS 404s on Pages
   trailingSlash: true,
 
   env: { NEXT_PUBLIC_BASE_PATH: BASE_PATH },
