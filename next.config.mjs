@@ -5,13 +5,18 @@ const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
 
-  basePath: BASE_PATH,          // ✅ correct subpath
-  trailingSlash: true,          // ok for Pages
+  // Correct basePath for GitHub Pages
+  basePath: BASE_PATH,
 
-  // expose for helper usage (raw <a>/<img>)
+  // ❌ DO NOT use assetPrefix on Pages; it breaks CSS/JS
+  // assetPrefix: `${BASE_PATH}/`,
+
+  trailingSlash: true,
+
+  // for withBasePath() helper and any raw <a>/<img>
   env: { NEXT_PUBLIC_BASE_PATH: BASE_PATH },
 
-  // keep relaxed checks in CI
+  // keep your relaxed checks
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 };
